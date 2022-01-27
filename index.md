@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Hello World</h1>
+<p>I'm L.M. Nawrocki, and I also go by Lemon. You can call me either thing,
+just don't mix and match the two names, please. My pronouns are they/them.
+I'm a junior studying Mechanical Engineering at Cornell.</p>
+</body>
+</html>
