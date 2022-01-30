@@ -9,3 +9,5 @@
 <p> Looking forward to this class :) </p>
 </body>
 </html>
+
+# [Lab 1](https://lmnawrocki.github.io/lab1/)
