@@ -31,9 +31,10 @@ This video has sound explaining what's going on. <br>
 Building a website is kind of hard for a MechE major who has barely touched github, has never used markdown before, and gets overwhelmed easily by lots of pages and advice on how to do the same thing in a lot of different ways. <br>
 I'm pretty happy with the simple stuff I ended up with, but it took me longer than I'm willing to admit to get to this very basic site. <br>
 
-Some web-design notes:
-- Make new pages with a folder in the main repository folder (where the first index.md is stored). Then put new index.md files in the folder. The link to the page will be `<main website>/<folder name>`.
+Some web design notes:
+- Make new pages with a folder in the main repository folder (where the first index.md is stored). Then put new index.md files in the folder. The link to the page will be `<main website>/<folder name>/`.
 - I haven't figured out how to remove the homepage link at the top of every page yet :/
-- I haven't figured out how to make this dark mode yet
-- new lines can be done with either `\` or `<br>` or hitting `Enter` twice. I'm making things look like code with pairs of \`.
+- I haven't figured out how to make this dark mode yet :'(
+- new lines can be done with either `\` or `<br>` or hitting `Enter` twice.
+- make things look like code with pairs of \`.
 - `#` does a big heading. `##` does a smaller heading, and generates a link next to it on the webpage to link to that heading
