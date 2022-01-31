@@ -15,9 +15,12 @@ To open the Serial Monitor, go to Tools > Serial Montior in the Arduino IDE. <br
 This code prints anything the user sends to the Serial Monitor on the computer back at the user. <br>
 [Video Link](https://drive.google.com/file/d/12capsugxCA_vEygTfkfhMVuvJ83upcOO/view?usp=sharing)
 ## Example: analogRead
-it read temperature. cool.
+Code: <br>
+Again, make sure the baud rate is the same in both places as described above. <br>
+I heated up the Artemis Nano with the warmth of my hand, and you can see in the video below this increased the raw temperature output slightly.
+[Video Link]()
 ## Example: MicrophoneOutput
-i talk lol
+Code: <br>
 
 ## Other Stuff I Learned (Web Design):
 Building a website is kind of hard for a MechE major who has barely touched github, has never used markdown before, and gets overwhelmed easily by lots of pages and advice on how to do the same thing in a lot of different ways. <br>
