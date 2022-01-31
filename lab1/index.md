@@ -15,6 +15,7 @@ It's important to make certain that in the line
 defines the BAUD rate to a number that you can set it to in the Serial Montior. If the number defined here and the number in the bottom right of the Serial Monitor don't match, your computer will be expecting a different communication speed than the Artemis, and therefore the things that you see in the Serial Monitor will be gibberish. <br>
 To open the Serial Monitor, go to Tools > Serial Montior in the Arduino IDE. <br>
 This code prints anything the user sends to the Serial Monitor on the computer back at the user. <br>
+Additionally, you may need to go to Tools > Port to make sure that the correct port is selected to correspond to where the Artemis is plugged into your computer. <br>
 [Video Link](https://drive.google.com/file/d/12capsugxCA_vEygTfkfhMVuvJ83upcOO/view?usp=sharing)
 ## Example: analogRead
 Code: Example02_AnalogRead <br>
