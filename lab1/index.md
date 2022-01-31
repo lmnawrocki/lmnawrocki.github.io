@@ -32,4 +32,8 @@ Building a website is kind of hard for a MechE major who has barely touched gith
 I'm pretty happy with the simple stuff I ended up with, but it took me longer than I'm willing to admit to get to this very basic site. <br>
 
 Some web-design notes:
-Make new pages with a folder in the main repository folder (where the first index.md is stored). Then put new index.md files in the folder. The link to the page will be `<main website>/<folder name>`.
+-Make new pages with a folder in the main repository folder (where the first index.md is stored). Then put new index.md files in the folder. The link to the page will be `<main website>/<folder name>`.
+-I haven't figured out how to remove the homepage link at the top of every page yet :/
+-I haven't figured out how to make this dark mode yet
+-new lines can be done with either `\` or `<br>` or hitting `Enter` twice. I'm making things look like code with pairs of `.
+-`#` does a big heading. `##` does a smaller heading, and generates a link next to it on the webpage to link to that heading
