@@ -45,6 +45,4 @@ Serial.println(float_c);
 
 ## Task 4
 
-In your report, briefly explain the difference between the two approaches:
-Receive a float value in Python using receive_float() on a characteristic that is defined as BLEFloatCharactersitic in the Arduino side
-Receive a float value in Python using receive_string() (and subsequently converting it to a float type in Python) on a characteristic that is defined as a BLECStringCharactersitic in the Arduino side
+[//]: <> (In your report, briefly explain the difference between the two approaches: Receive a float value in Python using receive_float() on a characteristic that is defined as BLEFloatCharactersitic in the Arduino side Receive a float value in Python using receive_string() (and subsequently converting it to a float type in Python) on a characteristic that is defined as a BLECStringCharactersitic in the Arduino side)
