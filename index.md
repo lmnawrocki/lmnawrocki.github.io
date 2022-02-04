@@ -7,3 +7,4 @@
 <p> Looking forward to this class :) </p>
 
 # [Lab 1](https://lmnawrocki.github.io/lab1/)
+# [Lab 2](https://lmnawrocki.github.io/lab2/)
