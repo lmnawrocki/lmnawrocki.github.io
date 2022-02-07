@@ -6,5 +6,5 @@
 <p> Outside of school stuff, I'm loosely vegan (actually pescatarian) and I love studying American Ornamental Penmanship.</p>
 <p> Looking forward to this class :) </p>
 
-# [Lab 1](https://lmnawrocki.github.io/lab1/)
-# [Lab 2](https://lmnawrocki.github.io/lab2/)
+# [Lab 1 Artemis](https://lmnawrocki.github.io/lab1/)
+# [Lab 2 Bluetooth](https://lmnawrocki.github.io/lab2/)
