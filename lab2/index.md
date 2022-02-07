@@ -93,6 +93,7 @@ When you receive a float value in Python using receive_float(), the type float i
 The floats and strings also have different UUIDs for transmission.
 \
 The string also has a max message size, whereas the float will just round to some maximum number of digits, which is different from the max message size, and puts a different limit on the data that can be transmitted into one variable.
+\
 [//]: <> (Receive a float value in Python using receive_string() (and subsequently converting it to a float type in Python) on a characteristic that is defined as a BLECStringCharactersitic in the Arduino side)
 \
 However, this changes when you need to send a lot of floats at once. There is an overhead cost to sending a single piece of data, and this can make it more efficient to send things as a string if you have a lot of floats to send at once
