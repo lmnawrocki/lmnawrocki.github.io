@@ -16,36 +16,42 @@ ble.connect()
 will connect the computer to the Artemis.
 
 ## Task 1 - Echo
+This is completeing the ECHO case of the handle_command() function in the code that is downloaded to the Artemis.
 C++ code:
 ```
-tx_estring_value.clear();
-tx_estring_value.append(char_arr);
+tx_estring_value.clear(); //clear the EString where the data is stored
+tx_estring_value.append(char_arr); //append the character array transmitted from the computer
 
-tx_characteristic_string.writeValue(tx_estring_value.c_str());
+tx_characteristic_string.writeValue(tx_estring_value.c_str()); //write this to the characteristic string
 
-Serial.print("Sent back: ");
-Serial.println(tx_estring_value.c_str());
+Serial.print("Sent back: "); //print to Serial Monitor
+Serial.println(tx_estring_value.c_str()); // print the string
 ```
 Python Code:
 ```
-ble.send_command(CMD.ECHO, "hey")
+ble.send_command(CMD.ECHO, "hey") //sends text to echo to the Artemis over bluetooth
 ```
+Change the "hey" to change what the Artemis echos back to the Serial Monitor.
 
 ## Task 2 - Send Three Floats
+This is completeing the SEND_THREE_FLOATS case of the handle_command() function in the code that is downloaded to the Artemis.
 C++ Code:
 ```
-float float_a, float_b, float_c;
-success = robot_cmd.get_next_value(float_a);
+float float_a, float_b, float_c; //declare the float variables
+
+success = robot_cmd.get_next_value(float_a); //make sure float a is received correctly
 if (!success)
     return;
 
-success = robot_cmd.get_next_value(float_b);
+success = robot_cmd.get_next_value(float_b); //make sure float a is received correctly
 if (!success)
     return;
 
-success = robot_cmd.get_next_value(float_c);
+success = robot_cmd.get_next_value(float_c); //make sure float a is received correctly
 if (!success)
     return;
+
+// print the floats to the Serial Monitor
 
 Serial.print("Three Floats: ");
 Serial.print(float_a);
@@ -54,7 +60,8 @@ Serial.print(float_b);
 Serial.print(", ");
 Serial.println(float_c);
 ```
-Python Code:
+Python Code to send the floats to the Artemis.
+The | delimeters are important to separate the data.
 ```
 ble.send_command(CMD.SEND_THREE_FLOATS, "3.1|2.6|4.5")
 ```
@@ -88,12 +95,6 @@ while True:
 
 [//]: <> (In your report, briefly explain the difference between the two approaches: Receive a float value in Python using receive_float() on a characteristic that is defined as BLEFloatCharactersitic in the Arduino side)
 
-When you receive a float value in Python using receive_float(), the type float is maintained throughout the process. Additionally, this is more efficient than sending it as a string because it takes fewer bits to send a float than a string of the same length. 
+When you receive a float value in Python using receive_float(), the type float is maintained throughout the process. Additionally, when sending a single number on its own, this is more efficient than sending it as a string because it takes fewer bits to send a float than a string of the same length. The floats and strings have different UUIDs for transmission and it takes a different number of bits to send a float and string of the same length.
 \
-The floats and strings also have different UUIDs for transmission.
-\
-The string also has a max message size, whereas the float will just round to some maximum number of digits, which is different from the max message size, and puts a different limit on the data that can be transmitted into one variable.
-\
-[//]: <> (Receive a float value in Python using receive_string() (and subsequently converting it to a float type in Python) on a characteristic that is defined as a BLECStringCharactersitic in the Arduino side)
-\
-However, this changes when you need to send a lot of floats at once. There is an overhead cost to sending a single piece of data, and this can make it more efficient to send things as a string if you have a lot of floats to send at once
+However, if you need to send a lot of floats very fast or at once, it's actually more efficient to put them together in a string and send them in packets. This is because there is an overhead cost to telling the computer that a piece of data is a float or a string, and sending things in together in strings reduces that overhead cost.
