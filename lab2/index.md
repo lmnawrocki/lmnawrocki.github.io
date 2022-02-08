@@ -71,26 +71,32 @@ ble.send_command(CMD.SEND_THREE_FLOATS, "3.1|2.6|4.5")
 Define the notification handler function:
 ```
 def notification_handler(uuidstring, byte_array):
-    global notification
+    global notification // declare that notification is the same as the global variable so this function can update it
     
     floatbytes = ble.bytearray_to_float(byte_array)
     notification = ble.receive_float(ble.uuid['RX_FLOAT'])
     
     if notification != floatbytes:
-        return notification
+        return True // this function doesn't need to return anything, but it's good to know if something updated or not if needed
     else:
         return False
 ```
+This updates the global variable "nofication" if it is different from what it was last time the funtion was called.
 Test to make sure that the function is working:
 ```
-ble.start_notify(ble.uuid['RX_FLOAT'], notification_handler)
-notification = 5.9
+ble.start_notify(ble.uuid['RX_FLOAT'], notification_handler) // start the notification handler
+notification = 0 // initialize the global notification variable
 
-import asyncio
+import asyncio // import a library to sleep
 while True:
     print(notification)
     await asyncio.sleep(1)
 ```
+asyncio allows the computer not output the print line for a second while letting background callback tasks run so that the notification variable properly updates each second.
+\
+This code implements notification handler as a callback function.
+\
+This while loop would run forever, but the float stops incrementing at a certain number, due to constraints on the Artemis.
 ## Task 4
 
 [//]: <> (In your report, briefly explain the difference between the two approaches: Receive a float value in Python using receive_float() on a characteristic that is defined as BLEFloatCharactersitic in the Arduino side)
