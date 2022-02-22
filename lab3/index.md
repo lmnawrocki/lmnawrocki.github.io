@@ -2,27 +2,27 @@
 
 ## Soldering stuff
 # Why You should use shutdown pins
-using shutdown pins will make it more clear in my code which TOF sensor the code is "talking" to at any point in time.
+Using shutdown pins will make it more clear in my code which TOF sensor the code is "talking" to at any point in time.
 
-I am not the best at CS and thus it is good to know very clearly what is happening.
+I am not the best at CS and it will be easier for me to understand what is happening when the sensor not in use is completely shut off. I also enjoyed getting the extra solding practice.
 
 Also, I'm too lazy to think of a new address for the second TOF sensor, and this is a great way to avoid that.
 
 (There's no way that's better than the other, really. Both ways work. Except my way is obviously better.)
 
-# Set up TOF
-Wire yellow to 
-Wire blue to
+# Wire up TOF
+Wire yellow to SCL.
+Wire blue to SDA.
 Wire black to ground.
-Wire red to V
+Wire red to VDD.
 
 I used pin 4 and 8 and green wires to connect the shutdown pins. (XSHUT on the TOF sensor.)
 
-# Set up IMU
-Wire yellow to 
-Wire blue to
+# Wire up IMU
+Wire yellow to SCL.
+Wire blue to SDA.
 Wire black to ground.
-Wire red to V
+Wire red to 2-6V.
 
 # some soldering stuff I learned
 Soldering is very hard. The wires in this project are made up of a bunch of smaller wires. 
@@ -40,6 +40,12 @@ I think that on the final robot, since it is so fast, it might be best to use th
 
 ## 3b
 AD0_VAL is the value of the last bit of the I2C address. It should be 0 in our case.
+
+The accelerometer is much more accurate than the gyroscope.
+
+The gyroscope has drift, and the sensor value will slowly increase even when the car is just sitting on the table.
+
+![Drift](C:\Users\ski12\Documents\GitHub\lmnawrocki.github.io\images "Drift Graph")
 
 # Accelerometer
 
