@@ -8,3 +8,4 @@
 
 # [Lab 1 Artemis](https://lmnawrocki.github.io/lab1/)
 # [Lab 2 Bluetooth](https://lmnawrocki.github.io/lab2/)
+# [Lab 3 Sensors](https://lmnawrocki.github.io/lab3/)
