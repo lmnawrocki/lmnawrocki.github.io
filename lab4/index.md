@@ -2,8 +2,8 @@
 
 # Part A
 ### Table 1 - Measurements
-Description | Measurement [cm]
---- | --- |
+Description | Measurement
+----------- | --------------- |
 Diameter of wheels | 8
 Diameter of wheels (deformed by the pressure of my hand) | 6.8
 Thickness of wheels | 2.8
