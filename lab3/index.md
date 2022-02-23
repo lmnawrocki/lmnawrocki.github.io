@@ -34,6 +34,16 @@ Soldering is very hard. The wires in this project are made up of a bunch of smal
 # 3a
 1. When you just have one TOF, it prints one address. When you have two TOFs connected, it prints *every* address. This is not exactly what I expected, however, the TAs have confirmed this is normal behavior.
 
+Here is the code I used to set up the shutdown pins:
+```
+//make sure shutdown pins are at the right values
+pinMode(4, OUTPUT);
+pinMode(8, OUTPUT);
+digitalWrite(8, HIGH);
+digitalWrite(4, LOW);
+```
+Simply switch which pin is high to change which sensor is on.
+
 2. Setting the distance mode changes the maximum distnce the TOF can read. Longer distance modes can be less accurate, though.
 
 I think that on the final robot, since it is so fast, it might be best to use the 1.3m mode since that can potentially tell the robot most accurately when it is about to hit a wall. I don't think it's as important for the robot to know how far away it is from far away things, but I could be wrong.
@@ -205,16 +215,30 @@ alpha = .5
 alpha = .9
 ![alpha.9](../images/IMUal.9.PNG)
 
-
+Based on these, I think it's best to use alpha is .5 to avoid sensor noise.
+There is no reason to trust one data point over another, since the tap disturbance usually lasts for multiple collection points.
+\
+It would probably reduce the noise futher if I combined 3 data points instead of 2.
 ## Gyroscope
 ```
 gypitch = gypitch-myICM.gyrX()*dt/1000;
 gyroll = gyroll-myICM.gyrY()*dt/1000;
 gyyaw = gyyaw-myICM.gyrZ()*dt/1000;
 ```
-The gyroscope is much less accurate compared to the pitch and roll, as discussed previously with the drift.
+The gyroscope is much less accurate compared to the pitch and roll, as discussed previously with the drift. My values slowly increase even when the sensor is sitting flat on the table.
 
 A higher sampling frequency tends to be more accurate for the gyroscope.
+
+Here's how you would do a complimentary filter:
+```
+float alpha2 = .9;
+comppitch = (comppitch + myICM.gyrX()*dt/1000)*(1-alpha2) + pitchLPF[n]*alpha2;
+comproll = (comproll + myICM.gyrY()*dt/1000)*(1-alpha2) + rollLPF[n]*alpha2;
+```
+I need to choose a high alpha value because I trust the accelerometer much more than the gyroscope.
+
+I found .9 to work well, as shown by some gentle tap disturbances in this plot:
+![IMUgyrocopliment](../images/IMUcomplement.PNG)
 
 ## Code Citations:
 I used the Feb. 3 lecture slides for code for the complementary filter.
