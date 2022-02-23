@@ -47,7 +47,6 @@ The accelerometer is much more accurate than the gyroscope.
 \
 The gyroscope has drift, which is where the sensor value will slowly increase even when the sensor is just sitting on the table, not moving.
 \
-
 Here is some data:
 ```
 Scaled. Acc (mg) [ -00734.86, -00912.11, -00645.51 ], Gyr (DPS) [  00016.77, -00146.07, -00048.37 ], Mag (uT) [  00561.30, -00585.45, -00283.95 ], Tmp (C) [  00025.59 ]
@@ -80,10 +79,142 @@ Scaled. Acc (mg) [ -00473.63, -00442.38,  00588.87 ], Gyr (DPS) [ -00023.33, -00
 \
 In this graph, you can see the drift that occurs in 
 
-Because these values are negative on average, the integration of them will gradually accumulate more and more error.
+Because these values are negative on average, the integration of them will gradually accumulate more and more error. This error becomes sigificant quickly on my sensor, therefore I do not trust the gyroscope data.
 
 ## Accelerometer
+Convert into pitch and roll: (and convert to degrees)
+```
+    float pitch = atan(myICM.accX()/myICM.accZ())*180/3.14159;
+    float roll = atan(myICM.accY()/myICM.accZ())*180/3.14159;
+```
+Pitch:
 
+The output at +/-90:
+```
+pitch -89.20
+pitch -89.66
+pitch 89.72
+pitch -89.27
+pitch 89.97
+pitch 89.89
+pitch -89.70
+pitch -89.19
+pitch -89.24
+pitch -89.22
+```
+The sensor oscillates between positive and negative values depending on its exact angle when near vertical in both orientations.
+
+The output at 0:
+```
+pitch 0.45
+pitch -0.21
+pitch 0.27
+pitch 0.60
+pitch -0.50
+pitch 0.12
+pitch -0.06
+pitch -0.15
+pitch -0.45
+pitch -1.16
+pitch -0.80
+pitch -1.30
+pitch 0.03
+pitch -0.71
+pitch -0.54
+pitch 0.18
+pitch -0.12
+pitch -0.15
+```
+The sensor oscillates between positive and negative values when flat on the table.
+
+
+Roll:
+\
+The output at 0:
+\
+I wasn't able to hold my sensor perfectly, but you get the idea:
+```
+roll 1.25
+roll 0.81
+roll 0.53
+roll 1.31
+roll 0.93
+roll 1.08
+roll 1.43
+roll 1.77
+roll 1.71
+roll 1.82
+roll 1.72
+roll 1.91
+roll 1.56
+roll 1.59
+```
+The output at +/- 90:
+```
+roll 89.66
+roll 89.94
+roll -89.54
+roll -89.60
+roll -89.57
+roll -89.49
+roll -89.49
+roll -89.91
+roll 90.00
+roll -89.18
+roll 90.00
+roll -89.20
+roll -89.20
+roll -89.43
+roll -89.77
+```
+The sensor will flip signs when it passes over the vertical in both orientations.
+
+My accelerometer is pretty accurate. It displayed pitch and roll values very close to what I would expect for the angles I put it at.
+
+It is notable that with the way my code is, I won't get pitch and roll values outside of {-90, 90}. I could modify my code to consider the signs of both the X accel and Z accel outside of the arctan function to get 360 pitch and roll, but I have chosen not to do this right now for the sake of time.
+
+## Tapping the Sensor
+Filter Code:
+```
+float alpha = .1;
+if(n > 1){
+pitchLPF[n] = alpha*pitch + (1-alpha)*pitchLPF[n-1];
+rollLPF[n] = alpha*roll + (1-alpha)*rollLPF[n-1];
+}
+else {
+    pitchLPF[n] = alpha*pitch + (1-alpha)*pitch;
+    rollLPF[n] = alpha*roll + (1-alpha)*roll;
+```
+The if/else statement is to ensure that when n is initialized at 0, the code never attempts to access an invalid array element.
+\
+Here is what the serial monitor output looks like when the sensor is tapped (rather firmly):
+```
+pitch LPF 38.77, roll LPF 59.03
+pitch LPF 2.46, roll LPF 55.36
+pitch LPF -71.72, roll LPF 10.85
+pitch LPF -88.56, roll LPF -84.82
+pitch LPF 51.49, roll LPF 57.82
+pitch LPF 88.64, roll LPF 84.36
+```
+I plotted in Serial Plotter the response using three different alpha values:
+\
+alpha = .1:
+![alpha.1](../images/IMUal.1.PNG)
+alpha = .5
+![alpha.5](../images/IMUal.5.PNG)
+alpha = .9
+![alpha.9](../images/IMUal.9.PNG)
+
+
+## Gyroscope
+```
+gypitch = gypitch-myICM.gyrX()*dt/1000;
+gyroll = gyroll-myICM.gyrY()*dt/1000;
+gyyaw = gyyaw-myICM.gyrZ()*dt/1000;
+```
+The gyroscope is much less accurate compared to the pitch and roll, as discussed previously with the drift.
+
+A higher sampling frequency tends to be more accurate for the gyroscope.
 
 ## Code Citations:
 I used the Feb. 3 lecture slides for code for the complementary filter.
