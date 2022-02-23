@@ -53,7 +53,12 @@ Use `distanceSensor.setDistanceModeShort();` at the end of the setup function to
 3. The sensor is less accurate on soft surfaces such as my knit hat, and more accurate on hard surfaces such as my notebook. The sensor does not seem to care if the target is red, gray, or pink and blue.
 
 Here is a graph of the accuracy:
+\
 ![tofaccuracy](../images/TOFaccuracy.PNG)
+
+Here is a picture of the setup I used:
+\
+![distancesetup](../images/distancemeasure.jpg)
 
 # 3b
 AD0_VAL is the value of the last bit of the I2C address. It should be 0 in our case.
