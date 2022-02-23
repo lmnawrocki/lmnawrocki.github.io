@@ -44,9 +44,16 @@ digitalWrite(4, LOW);
 ```
 Simply switch which pin is high to change which sensor is on.
 
-2. Setting the distance mode changes the maximum distnce the TOF can read. Longer distance modes can be less accurate, though.
+2. Setting the distance mode changes the maximum distance the TOF can read. Longer distance modes can be less accurate, though.
 
 I think that on the final robot, since it is so fast, it might be best to use the 1.3m mode since that can potentially tell the robot most accurately when it is about to hit a wall. I don't think it's as important for the robot to know how far away it is from far away things, but I could be wrong.
+
+Use `distanceSensor.setDistanceModeShort();` at the end of the setup function to set the distance mode to short. Make sure this is AFTER `distanceSensor.begin()` has been successful, otherwise your code will not compile.
+
+3. The sensor is less accurate on soft surfaces such as my knit hat, and more accurate on hard surfaces such as my notebook. The sensor does not seem to care if the target is red, gray, or pink and blue.
+
+Here is a graph of the accuracy:
+![tofaccuracy](../images/TOFaccuracy.PNG)
 
 # 3b
 AD0_VAL is the value of the last bit of the I2C address. It should be 0 in our case.
