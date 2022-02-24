@@ -21,6 +21,7 @@ Distance between left and right wheels (2) | 8.9
 
 ### Table 2 - Screws
 Type of Screws                              | Number of Such Type
+--------------------------------------------|--------------------
 Screws to hold two halves together          | 4
 Screws holding gearbox frame to outer shell | 8
 Screws on the circuit board                 | 2
