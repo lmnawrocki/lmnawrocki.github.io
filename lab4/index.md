@@ -20,13 +20,13 @@ Distance between left and right wheels (2) | 8.9
 (2) measured from the inside of the wheels closest to the car
 
 ### Table 2 - Screws
-Type of Screws                              | Number of Such Type
---------------------------------------------|--------------------
-Screws to hold two halves together          | 4
-Screws holding gearbox frame to outer shell | 8
-Screws on the circuit board                 | 2
-Screws holding battery compartment cover on | 1
-Number of screws to worry about losing      | 14
+Type of Screws                                | Number of Such Type
+----------------------------------------------|--------------------
+Screws to hold two halves together            | 4
+Screws holding gearbox frame to outer shell   | 8
+Screws on the circuit board                   | 2
+Screws holding battery compartment cover on   | 1
+Number of screws to worry about losing        | 14
 
 ### Stationary Observation 3 - Cat
 She is mildly interested in the car. Thankfully she has not yet become too interested while it is moving.
@@ -94,3 +94,11 @@ while i <500:
 ![test3](../images/test3.PNG)
 ![test4](../images/test4.PNG)
 ![test5](../images/test5.PNG)
+
+The IMU sensor had a lot of noise, as I did not use the filtering from Lab 3. Since it doesn't come to a steady value, you can see that I was unable to accelerate the robot fully in my small apartment.
+
+This data also shows that the transmission over Bluetooth is quite slow--it could only get in a few data points before the robot stopped/hit the wall and unplugged itself from the battery.
+
+I chose not to accelerate the car fully because I was worried about destroying it running it into the wall.
+
+Also, in my best human efforts to stop it as close to the wall as possible, I was able to get the robot 17cm from the wall on the wood floor.
