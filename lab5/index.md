@@ -151,3 +151,86 @@ void loop() {
 ```
 
 Video:
+![slowMovement]()
+
+Straight line loop code:
+```
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+
+}
+int delaytime = 10000;
+
+void loop() {
+  analogWrite(6, 34); //forward
+  analogWrite(13, 38); //forward
+  delay(delaytime);
+  
+  analogWrite(6, 0); // stop motor
+  analogWrite(13, 0); // stop motor
+  delay(10000000000000000);
+}
+```
+Straight line video:
+![straightLine]()
+
+OL Code:
+```
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+
+}
+
+int delaytime = 1000;
+
+void loop() {
+  analogWrite(6, 255); //spin one way
+  analogWrite(12, 255); 
+  delay(delaytime);
+
+  stopMotors();
+  delay(500);
+
+  analogWrite(13, 255); //spin other way
+  analogWrite(7, 255);
+  delay(delaytime);
+  
+  stopMotors();
+  delay(500);
+
+  analogWrite(13, 100); // forward
+  analogWrite(6, 100);
+  delay(500);
+  
+  stopMotors();
+  delay(500);
+
+  analogWrite(12, 100); // forward
+  analogWrite(7, 100);
+  delay(500);
+  
+
+  stopMotors();
+  delay(500);
+  
+  delay(10000000000000000);
+}
+
+void stopMotors() {
+  analogWrite(6, 0); // stop motor
+  analogWrite(13, 0); // stop motor
+  analogWrite(7, 0);
+  analogWrite(12, 0);
+}
+```
+
+OL Video:
+![openLoop](../images/OLcontrol.mp4)
