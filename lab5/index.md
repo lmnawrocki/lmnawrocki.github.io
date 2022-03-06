@@ -149,9 +149,9 @@ void loop() {
 }
 ```
 
-[Slow Movement Video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
+[Slow Movement Video](https://drive.google.com/file/d/1w_lNlxlzIldLpLUuWOJK8-VtY2pBy6-H/view?usp=sharing)
 
-Looking at where my robot was in the code while it was moving, the lower limit of when the motors move it seems to be around a speed 33-34
+Looking at where my robot was in the code while it was moving, the lower limit of when the motors move it seems to be around a speed 33-34.
 
 
 Straight line loop code:
@@ -176,7 +176,12 @@ void loop() {
   delay(10000000000000000);
 }
 ```
-[Straight line video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
+[Straight line video](https://drive.google.com/file/d/1UYnsVOr3VtYZBqa70O0fjb5N4gTJFWVK/view?usp=sharing)
+
+In the process of getting this to work, I noticed that there is a slight imbalance in the power output of my motors, therefore I move the one on pin 13 a little bit faster to get the robot to move straighter.
+
+It is notable that this relationship is nonlinear with the power input to the motors. I may need to use a different ratio/difference in input at different speeds.
+
 
 OL Code:
 ```
@@ -232,4 +237,4 @@ void stopMotors() {
 }
 ```
 
-[OL Video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
+[OL Video](https://drive.google.com/file/d/15FEwElfQOallrpd0WPFaxG314KCApNN8/view?usp=sharing)
