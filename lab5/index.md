@@ -96,7 +96,7 @@ void loop() {
   delay(10000000000000000);
 }
 ```
-[Motors Function in All Directions -- Video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
+[Motors Function in All Directions -- Video](https://drive.google.com/file/d/1w_lNlxlzIldLpLUuWOJK8-VtY2pBy6-H/view?usp=sharing)
 
 7. 
 
@@ -149,7 +149,7 @@ void loop() {
 }
 ```
 
-[Slow Movement Video](https://drive.google.com/file/d/1w_lNlxlzIldLpLUuWOJK8-VtY2pBy6-H/view?usp=sharing)
+[Slow Movement Video](https://drive.google.com/file/d/1-ERXkwrj1ZXwvktAxRe4dxnmQmcULPET/view?usp=sharing)
 
 Looking at where my robot was in the code while it was moving, the lower limit of when the motors move it seems to be around a speed 33-34.
 
