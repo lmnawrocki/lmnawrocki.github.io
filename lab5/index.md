@@ -96,8 +96,7 @@ void loop() {
   delay(10000000000000000);
 }
 ```
-Video:
-![bothdirections](../images/motors%20work!.mp4)
+[Motors Function in All Directions -- Video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
 
 7. 
 
@@ -150,8 +149,10 @@ void loop() {
 }
 ```
 
-Video:
-![slowMovement]()
+[Slow Movement Video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
+
+Looking at where my robot was in the code while it was moving, the lower limit of when the motors move it seems to be around a speed 33-34
+
 
 Straight line loop code:
 ```
@@ -175,8 +176,7 @@ void loop() {
   delay(10000000000000000);
 }
 ```
-Straight line video:
-![straightLine]()
+[Straight line video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
 
 OL Code:
 ```
@@ -232,5 +232,4 @@ void stopMotors() {
 }
 ```
 
-OL Video:
-![openLoop](../images/OLcontrol.mp4)
+[OL Video](https://drive.google.com/drive/u/0/folders/11GfFDY5akuKIYUHEsXp0bvGrKUy-pq9A)
