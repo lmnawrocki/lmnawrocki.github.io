@@ -13,7 +13,7 @@ These integrator and derivative are most useful when dt is very small.
 Additionally, the derivitave term is subject to derivative kick, particularly when I use the e-stop function I built in when something is very close to the front TOF sensor, and the integral term is subject to integrator wind-up, which can cause my car to want to overshoot and consistently hit the wall, and I don't need to break any more TOF sensors.
 
 ## Implementing PID Control
-To see the global variable declarations, look at the Appendix at the bottom of this page.
+To see the global variable declarations, look at the [Appendix](https://lmnawrocki.github.io/lab6/#appendix--global-variable-declarations) at the bottom of this page.
 All of the code in this section is in a function:
 ```
 void proportionalControl(){}
@@ -150,6 +150,8 @@ Later on in the PID loop after all the hacks and incrementing the iteration numb
 These functions only transmit 20 values at a time. I could be more efficient by deleting the spaces after each comma and upping the max message size to 200 characters to send closet to 30 values per string, but I wanted the data to be readable in Jupyter Lab.
 It is noteworthy that this code can break if the values are enough digits such that the string built is over 150 characters (or the current max message size) and then the values will not be sent properly. 
 
+It would be much better to do this in the part of the code where the robot stops as it reaches the correct range of TOF values, as the delays can cause slight issues, but I didn't have time to implement this.
+
 ### Using String Builders
 This function puts the timestamp values into the characteristic string.
 ```
@@ -200,7 +202,21 @@ while True:
 [at home -- still works :)](https://photos.app.goo.gl/QN4kwuHayH9UhhT69)
 
 ## Logged Data & Max Speed Acheived
-From my data logging, I was able to find that the max speed was xxx.
+From my data logging, I was able to find that the max speed was .7549 m/s.
+
+To find this, I used the following MatLab script on the data I transmitted over Bluetooth:
+```
+timestamps = [23830, 23932, 24033, 24130, 24232, 24327, 24430, 24526, 24627, 24724, 24824, 24934, 25043, 25136, 25245, 25354, 25453, 25564, 25657, 25766, 25859, 25968, 26067, 26176, 26274, 26384, 26484, 26586, 26690, 26799, 26909, 27007, 27116, 27215, 27324, 27422, 27537, 27630, 27745, 27840];
+distances = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 728, 1087, 1084, 1070, 1049, 1011, 967, 908, 852, 788, 722, 652, 585, 516, 452, 375, 309, 232, 188, 157, 150, 151, 162, 177, 195, 211, 232, 249, 271, 293];
+
+for i = 1:1:39
+   dt = timestamps(i+1) - timestamps(i);
+   dx = distances(i)-distances(i+1);
+   speed(i) = dx/dt;
+end
+
+max(speed)
+```
 ## Appendix -- Global Variable Declarations
 Here is the code I used to declare all the global variables that I used in this lab.
 ```
