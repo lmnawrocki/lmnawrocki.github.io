@@ -11,7 +11,7 @@
 # [Lab 3 -  Sensors](https://lmnawrocki.github.io/lab3/)
 # [Lab 4 - Characterize Your Car](https://lmnawrocki.github.io/lab4)
 # [Lab 5 - Open Loop Control](https://lmnawrocki.github.io/lab5)
-# [Lab 6](https://lmnawrocki.github.io/lab6)
+# [Lab 6 - P "ID" Control](https://lmnawrocki.github.io/lab6)
 
 This is what I look like:
 ![headshot](/images/lmn68_headshot.jpg)
