@@ -14,6 +14,7 @@ tof100 = tof100.*.001; % convert to meters
 ![position](../images/lab7position.png)
 ### Speed
 ![speed](../images/lab7computedspeed.png)
+
 Speed Calculation in MatLab:
 ```
 for i = 1:1:length(ts100)-1
@@ -38,7 +39,7 @@ steadyStateSpeed: 2.3455 m/s
 ninetyprtspeed = 2.1109 m/s
 interpolatedRiseTime = 1.9614 s
 ```
-I interpolated for the rise time because I am a nerd and this increases accuracy by .02 seconds compared to rounding to the nearest data point.
+I interpolated for the rise time because I am a nerd and this increases accuracy by .02 seconds compared to rounding to the nearest data point. And since the whole point of doing this is the TOF sensor only gets values every .1 seconds, .02 seconds matters.
 
 ### Finding A & B Matrices
 MatLab:
@@ -66,10 +67,11 @@ B =
 ```
 
 ## Kalman Filter Setup
+
 ### Process Noise and Sensor Noise Covariance Matrices
 
 ### C Matrix
-My C matrix is `[-1;0]` because my state space is `[x, xdot]`, and I can only measure `x` in the negative direction.
+My C matrix is `[-1;0]` because my state space is `[x; xdot]`, and I can only measure `x` in the negative direction. I cannot measure xdot directly with my TOF sensor.
 
 ## Sanity Check
 
