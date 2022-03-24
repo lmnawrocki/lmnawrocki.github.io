@@ -111,10 +111,19 @@ Running the Kalman filter, I was able to produce these graphs of the position an
 ![kfspeed](../images/lab7kalmanspeed.png)
 
 Overlay with the original data:
+
+
 ![kfposoverlay](../images/lab7kfoverlaypos.png)
+
+
 They look nearly identical :)
+
 ![kfspeedoverlay](../images/lab7kfspeedoverlay.png)
+
+
 And the speed is a nicely smoothed out curve of the calculated speeds, as the dynamical model can be used to find points in between :)
 
 ## Implement on Robot
 A new library has been added to the mix, the BasicLinearAlgebra library.
+
+
