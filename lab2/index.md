@@ -6,7 +6,7 @@ I followed the instructions on the course website. In summarry, you install Pyth
 To make sure that the Artemis and computer are connected via Bluetooth, modify the file `connection.yaml` and make certain that the artemis address is the same as the address it prints to the serial montior. Make sure each spot in the address has two digits, even if it's a number less than 10. (i.e. if one part of the address is 7, change it to 07)
 \
 After importing the necessary libraries, the lines
-```
+```py
 # Get ArtemisBLEController object
 ble = get_ble_controller()
 
@@ -18,7 +18,7 @@ will connect the computer to the Artemis.
 ## Task 1 - Echo
 This is completeing the ECHO case of the handle_command() function in the code that is downloaded to the Artemis.
 C++ code:
-```
+```cpp
 tx_estring_value.clear(); //clear the EString where the data is stored
 tx_estring_value.append(char_arr); //append the character array transmitted from the computer
 
@@ -28,7 +28,7 @@ Serial.print("Sent back: "); //print to Serial Monitor
 Serial.println(tx_estring_value.c_str()); // print the string
 ```
 Python Code:
-```
+```py
 ble.send_command(CMD.ECHO, "hey") //sends text to echo to the Artemis over bluetooth
 ```
 Change the "hey" to change what the Artemis echos back to the Serial Monitor.
@@ -36,7 +36,7 @@ Change the "hey" to change what the Artemis echos back to the Serial Monitor.
 ## Task 2 - Send Three Floats
 This is completeing the SEND_THREE_FLOATS case of the handle_command() function in the code that is downloaded to the Artemis.
 C++ Code:
-```
+```cpp
 float float_a, float_b, float_c; //declare the float variables
 
 success = robot_cmd.get_next_value(float_a); //make sure float a is received correctly
@@ -62,14 +62,14 @@ Serial.println(float_c);
 ```
 Python Code to send the floats to the Artemis.
 The | delimeters are important to separate the data.
-```
+```py
 ble.send_command(CMD.SEND_THREE_FLOATS, "3.1|2.6|4.5")
 ```
 
 ## Task 3 - Notification Handler
 
 Define the notification handler function:
-```
+```py
 def notification_handler(uuidstring, byte_array):
     global notification // declare that notification is the same as the global variable so this function can update it
     
@@ -83,7 +83,7 @@ def notification_handler(uuidstring, byte_array):
 ```
 This updates the global variable "nofication" if it is different from what it was last time the funtion was called.
 Test to make sure that the function is working:
-```
+```py
 ble.start_notify(ble.uuid['RX_FLOAT'], notification_handler) // start the notification handler
 notification = 0 // initialize the global notification variable
 

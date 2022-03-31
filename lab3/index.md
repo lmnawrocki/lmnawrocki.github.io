@@ -35,7 +35,7 @@ Soldering is very hard. The wires in this project are made up of a bunch of smal
 1. When you just have one TOF, it prints one address. When you have two TOFs connected, it prints *every* address. This is not exactly what I expected, however, the TAs have confirmed this is normal behavior.
 
 Here is the code I used to set up the shutdown pins:
-```
+```cpp
 //make sure shutdown pins are at the right values
 pinMode(4, OUTPUT);
 pinMode(8, OUTPUT);
@@ -105,7 +105,7 @@ Because these values are negative on average, the integration of them will gradu
 
 ## Accelerometer
 Convert into pitch and roll: (and convert to degrees)
-```
+```cpp
     float pitch = atan(myICM.accX()/myICM.accZ())*180/3.14159;
     float roll = atan(myICM.accY()/myICM.accZ())*180/3.14159;
 ```
@@ -197,7 +197,7 @@ It is notable that with the way my code is, I won't get pitch and roll values ou
 
 ## Tapping the Sensor
 Filter Code:
-```
+```cpp
 float alpha = .1;
 if(n > 1){
 pitchLPF[n] = alpha*pitch + (1-alpha)*pitchLPF[n-1];
@@ -232,7 +232,7 @@ There is no reason to trust one data point over another, since the tap disturban
 \
 It would probably reduce the noise futher if I combined 3 data points instead of 2.
 ## Gyroscope
-```
+```cpp
 gypitch = gypitch-myICM.gyrX()*dt/1000;
 gyroll = gyroll-myICM.gyrY()*dt/1000;
 gyyaw = gyyaw-myICM.gyrZ()*dt/1000;
@@ -242,7 +242,7 @@ The gyroscope is much less accurate compared to the pitch and roll, as discussed
 A higher sampling frequency tends to be more accurate for the gyroscope.
 
 Here's how you would do a complimentary filter:
-```
+```cpp
 float alpha2 = .9;
 comppitch = (comppitch + myICM.gyrX()*dt/1000)*(1-alpha2) + pitchLPF[n]*alpha2;
 comproll = (comproll + myICM.gyrY()*dt/1000)*(1-alpha2) + rollLPF[n]*alpha2;

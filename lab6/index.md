@@ -15,11 +15,11 @@ Additionally, the derivitave term is subject to derivative kick, particularly wh
 ## Implementing PID Control
 To see the global variable declarations, look at the [Appendix](https://lmnawrocki.github.io/lab6/#appendix--global-variable-declarations) at the bottom of this page.
 All of the code in this section is in a function:
-```
+```cpp
 void proportionalControl(){}
 ```
 which is called while Bluetooth is connected in:
-```
+```cpp
 while (central.connected()) {
             readDistance();
             proportionalControl();
@@ -27,14 +27,14 @@ while (central.connected()) {
 ```
 after another function reads the current value of the TOF sensor on the front of the robot. (See lab 3 for details on TOF)
 ### Proportional Control
-```
+```cpp
 err[iter] = distance1 - totalDist;
 P = Kp*err[iter];
 ```
 ### Integral Control
 I found that the integrator wind-up and high error made using an integrator impractical in this lab, even with very small KI values.
 But here is the code you need to hypothetically implement an integrator. Initialize `integrator` at 0.
-```
+```cpp
 starttime = millis();
 dt = (starttime - endtime)*.001;
 integral = integral + err[iter]*dt;
@@ -45,7 +45,7 @@ Endtime and starttime are initialized at zero, and endtime is the time using `mi
 ### Derivative Control
 Here is hypothetically how you can implement a derivative aspect to PID control. I did not use this because the derivative kick made my robot go quite slowly. You can see a video of that here [Derivative Kick -- Video](https://photos.app.goo.gl/ow7LNoEkMuqRZndW8). The robot struggles to speed up at the begginning as a result of the derivative term. Please ignore that the robot does not meet and stay at the target distance in this video--I get it working later.
 
-```
+```cpp
 if (iter >2){
     derivative = (err[iter-1] - err[iter])/(dt);
   }
@@ -56,7 +56,7 @@ D =  KD * derivative;
 ```
 The KD value used in the video above was .05, but as you can see, it still had a big effect in slowing the robot down in the beggining.
 ### Putting PID Control Together & Controlling the Motors Accordingly
-```
+```cpp
 PID = P + I + D;
 
 // default case--writes all motor values to zero. Some will get over-written later with non-zero values.
@@ -93,7 +93,7 @@ I found that my TOF sensor is able to get data every 92-110ms, with an average t
 ## "Hacks" to make the system work & Dealing with Deadband
 ### Hack 1 -- Meh, Close Enough
 I decided that having +/- 1cm of error was acceptable in this lab. Therefore, if the TOF sensor is reading a value in between 290 and 310mm, the robot will actively brake by writing a high PWM signal to all motor pins.
-```
+```cpp
   if (distance1 < 310){
     if (distance1 > 290) {
       analogWrite(6, 255);
@@ -107,7 +107,7 @@ I decided that having +/- 1cm of error was acceptable in this lab. Therefore, if
 The following code will make sure your PID value is between 42 and 100.
 I used 42 as a value for the deadband of my motors because low battery power can increase this value a little bit.
 I used 100 as an upper value because I found that my robot went a little too fast and hit the wall too often without this upper limit, which I preferred to avoid especially after breaking a TOF sensor. The robot would still reach the setpoint without this upper limit, though.
-```
+```cpp
 if (PID > 100){
     PID = 100;
   }
@@ -119,7 +119,7 @@ if (PID > 1) {
 ```
 
 ### Hack 3 -- E-stop
-```
+```cpp
 // an e-stop for when I put my hand in front of the TOF sensor, to save my sanity
 if (distance1 < 50){
     PID = 0; // to avoid writing a value that would move the robot in another part of this loop iteration
@@ -134,7 +134,7 @@ This e-stop uses active breaking, but it would also be reasonably effective if t
 ## Sending Data Over Bluetooth
 ### Bluetooth Transmission Setup
 Later on in the PID loop after all the hacks and incrementing the iteration number, I transmit the time and distance values for that iteration.
-```
+```cpp
   if (n < 20){
     distance_values[n] = distance1;
     timestamp_values[n] = endtime;
@@ -154,7 +154,7 @@ It would be much better to do this in the part of the code where the robot stops
 
 ### Using String Builders
 This function puts the timestamp values into the characteristic string.
-```
+```cpp
 void transmitTime(){
   int i;
   tx_estring_value.clear();
@@ -167,7 +167,7 @@ void transmitTime(){
 }
 ```
 This function puts the TOF values into a different string for sending TOF values. I consider creating this BLECStringCharacteristic and the setup needed outside of this function to be within the scope of Lab 2.
-```
+```cpp
 void transmitDistance(){
   int i;
   tx_estring_value.clear();
@@ -181,7 +181,7 @@ void transmitDistance(){
 ```
 ### Receiving Over Bluetooth
 Use a notification handler funtion as in Lab 2 and print the values:
-```
+```py
 ble.start_notify(ble.uuid['RX_STRING'], notification_handler_string) # for PID values
 ble.start_notify(ble.uuid['RX_TOF1'], notification_handler_tof1) # for distance values
 
@@ -219,7 +219,7 @@ max(speed)
 ```
 ## Appendix -- Global Variable Declarations
 Here is the code I used to declare all the global variables that I used in this lab.
-```
+```cpp
 int totalDist = 300;
 int distance1 = 0;
 float Kp = 0.1;

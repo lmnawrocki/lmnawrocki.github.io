@@ -20,7 +20,7 @@ I intend to measure out how long wires need to be by situating them over the car
  2. 
  Code:
 
- ```
+ ```cpp
  void setup() {
   // put your setup code here, to run once:
   pinMode(6, OUTPUT);
@@ -39,7 +39,7 @@ void loop() {
 }
  ```
  or use this loop function to get the second oscilliscope output:
- ```
+ ```cpp
  void loop() {
   // SIDE 1 - direction 2
   analogWrite(7, speed1); //forward
@@ -58,7 +58,7 @@ Below are some photos of how I set up the power supply and the probes and what t
 
  4, 5, & 6.
  Code:
- ```
+ ```cpp
  void setup() {
   // put your setup code here, to run once:
   pinMode(6, OUTPUT);
@@ -100,7 +100,7 @@ void loop() {
 
 7. 
 
-```
+```cpp
 void setup() {
   // put your setup code here, to run once:
   pinMode(6, OUTPUT);
@@ -155,7 +155,7 @@ Looking at where my robot was in the code while it was moving, the lower limit o
 
 
 Straight line loop code:
-```
+```cpp
 void setup() {
   // put your setup code here, to run once:
   pinMode(6, OUTPUT);
@@ -184,7 +184,7 @@ It is notable that this relationship is nonlinear with the power input to the mo
 
 
 OL Code:
-```
+```cpp
 void setup() {
   // put your setup code here, to run once:
   pinMode(6, OUTPUT);

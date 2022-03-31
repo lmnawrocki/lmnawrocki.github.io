@@ -49,7 +49,7 @@ The test setup: Hardwood floors in my apartment:
 ![testsetup](../images/thetestsetup.jpg)
 
 Here is the code I used to get data from the TOF sensors on the Artemis:
-```
+```cpp
 void
 write_data()
 {   
@@ -68,7 +68,7 @@ write_data()
 ```
 
 Here is the code for getting IMU data:
-```
+```cpp
 void
 write_data()
 {   
@@ -85,7 +85,7 @@ write_data()
 ```
 
 Here is the Python code for receiving the data:
-```
+```py
 i = 0
 print(i)
 while i <500:

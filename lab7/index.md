@@ -77,7 +77,7 @@ Sensor noise: sigma_3, the noise/error in the sensor readings.
 
 I found this by saying there is 20mm of uncertainty in my sensor measurements.
 
-```
+```py
 sigma_1 = 31.6227766017; #trust in modeled position
 sigma_2 = 31.6227766017; #trust in modeled speed
 sigma_3 = 20; # trust in sensor values
@@ -89,7 +89,7 @@ sig_z=np.array([[sigma_3**2]])
 My C matrix is `[-1;0]` because my state space is `[x; xdot]`, and I can only measure `x` in the negative direction. I cannot measure xdot directly with my TOF sensor.
 
 ## Sanity Check
-```
+```py
 mu = np.array([[TOF[0]],[0]]) % most likely initial position is the first TOF value, most likely initial speed is 0
 y = TOF[0] % intitial output is the initial TOF value
 sigma = np.array([[.01,0],[0,.01]]) % initialize sigma with the initial uncertainty in position and velocity. keep these numbers low as I am relatively confident the mu values are very close to correct
@@ -99,7 +99,7 @@ dt = 0.1 # dt is the time difference between the sensor values
 
 Loop over the TOF values we know already and use them to make a best guess on the current position.
 
-```
+```py
 for x in range(0, 25):
     y = -TOF[x]
     mu, sigma = kf(mu, sigma, u, y)
@@ -125,5 +125,30 @@ And the speed is a nicely smoothed out curve of the calculated speeds, as the dy
 
 ## Implement on Robot
 A new library has been added to the mix, the BasicLinearAlgebra library.
+Here's how to initialize variables that should be declared globally:
+```cpp
+sigma_1 = 31.6227766017; //trust in modeled position
+sigma_2 = 31.6227766017; //trust in modeled speed
+sigma_3 = 20; //trust in sensor values
+Matrix <2,2,> Sigma_u = {sigma_1**2,0,
+                          0,sigma_2**2};
+                          
+Matrix <1,1> Sigma_z ={sigma_3**2};
 
+Matrix <2,2> A = {0,1,0,-1.1739};
+Matrix <2,1> B = {0,7.02*1000}
+Matrix <1,2> C = {-1,0};
+```
 
+Declare these in the setup code, after the sensors are initialized, as they depend on initial sensor values:
+```cpp
+
+```
+
+When implementing on the robot, it is necessary to change dt because the Kalman filter code can run much faster than the distance sensor code.
+
+The code needs to be structured such that the Kalman filter is running while we wait for a new value from the distance sensor.
+
+The dynamical model parts of the code run much more often than the distance sensor values, which allow us to figure out where the robot is in between reads of the distance sensor.
+
+The goal of this code is not necessarily to reach the target without overshoot (in fact I will not make my robot stop), but rather to show that the Kalman filter works and the distance values it finds are reasonable given the distance data colleced simultaneously via the distance sensor.
