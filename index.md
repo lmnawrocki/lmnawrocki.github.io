@@ -13,6 +13,7 @@
 # [Lab 5 - Open Loop Control](https://lmnawrocki.github.io/lab5)
 # [Lab 6 - P "ID" Control](https://lmnawrocki.github.io/lab6)
 # [Lab 7 - Kalman Filter](https://lmnawrocki.github.io/lab7)
+# [Lab 8 - Stunts](https://lmnawrocki.github.io/lab8)
 
 This is what I look like:
 ![headshot](/images/lmn68_headshot.jpg)
