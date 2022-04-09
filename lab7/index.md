@@ -124,31 +124,105 @@ They look nearly identical :)
 And the speed is a nicely smoothed out curve of the calculated speeds, as the dynamical model can be used to find points in between :)
 
 ## Implement on Robot
+The goal of this code is not necessarily to reach the target without overshoot (in fact I will not make my robot stop), but rather to show that the Kalman filter works and the distance values it finds are reasonable given the distance data colleced simultaneously via the distance sensor.
+
 A new library has been added to the mix, the BasicLinearAlgebra library.
-Here's how to initialize variables that should be declared globally:
+### Initialize Variables
 ```cpp
-sigma_1 = 31.6227766017; //trust in modeled position
-sigma_2 = 31.6227766017; //trust in modeled speed
-sigma_3 = 20; //trust in sensor values
-Matrix <2,2,> Sigma_u = {sigma_1**2,0,
-                          0,sigma_2**2};
+float sigma_1 = 31.6227766017; //trust in modeled position
+float sigma_2 = 31.6227766017; //trust in modeled speed
+float sigma_3 = 20.0; //trust in sensor values
+Matrix <2,2> Sigma_u = {1000.0,0,0,1000.0}; // sigma_1^2 and sigma_2^2 * identity matrix
                           
-Matrix <1,1> Sigma_z ={sigma_3**2};
+Matrix <1,1> Sigma_z ={40.0}; //sigma_3^2
 
 Matrix <2,2> A = {0,1,0,-1.1739};
-Matrix <2,1> B = {0,7.02*1000}
+Matrix <2,1> B = {0,7.02*1000};
 Matrix <1,2> C = {-1,0};
+
+Matrix <2,2> Ad = {1.0,0.00855,0.0,0.98996315}; //calculate new discretized values with new dt
+Matrix <2,1> Bd = { 0.0,60.021};
+
+Matrix <2,2> sigma {.01,0,0,.01};
+Matrix <1,1> u = {.3922}; // 100/255; 100 is the step response PWM value I used
+
+// initialize state vector
+Matrix <2, 1> mu = {0.0,0.0};
+Matrix <1,1> y = {0.0}; //these will get changed later when we find the initial distance value
+
+Matrix <2,2> eye = {1,0,0,1};
+
+// used during KF execution, initialize all as zeros
+Matrix <2,1> mu_p = {0.0,0.0};
+Matrix <2,2> sigma_p = {0.0,0.0,0.0,0.0};
+Matrix <1,1> sigma_m = {0.0};
+Matrix <1,1> sigma_minv = {0.0};
+Matrix <2,1> kkf_gain = {0.0,0.0};
+Matrix <1,1> y_m = {0.0};
+
+Matrix <2,1> sub = {0.0, 0.0};
+
+int initialDistance;
 ```
 
-Declare these in the setup code, after the sensors are initialized, as they depend on initial sensor values:
+When implementing on the robot, it is necessary to change dt because the dynamical model parts of the code run much more often than we get new distance sensor values, which allow us to figure out where the robot is in between reads of the distance sensor.
+
+I used a dt value of .00855 seconds. I found this by running my code for 500 iterations, using millis(); to get the start and end times, and divided the difference by 500.
+
+Be sure to find new discretized matrices with this new dt value using the Python code.
+
+### Distance Sensor Code
+The code needs to be structured such that the Kalman filter is running while we wait for a new value from the distance sensor. I wrote this function, with inspiration from Anya Prabowo, to set a boolean value to show if the variable storing the distance sensor reading has been updated in the current loop iteration. This code also updates the distance sensor reading.
 ```cpp
-
+void checkForDistance()
+{
+    if (distanceSensor1.checkForDataReady())
+    {
+      distance1 = distanceSensor1.getDistance(); 
+      distanceSensor1.clearInterrupt();
+      distanceSensor1.stopRanging();
+      distance1 = -distance1;
+      newdistance = true;
+      distanceSensor1.startRanging();
+    }
+    else {
+      newdistance = false;
+    }
+}
 ```
 
-When implementing on the robot, it is necessary to change dt because the Kalman filter code can run much faster than the distance sensor code.
+### Kalman Filter Loop Code
+```cpp
+void kalmanFilter(){
+  // prediction step  
+  mu_p = Ad*mu - Bd*u;
+  sigma_p = Ad*sigma*~Ad + Sigma_u;
 
-The code needs to be structured such that the Kalman filter is running while we wait for a new value from the distance sensor.
+  checkForDistance();
+  // update step
+  if (newdistance == true) {
+    sigma_m = C*sigma_p*~C + Sigma_z;
+    sigma_minv(0,0) = sigma_m(0,0);
+    Invert(sigma_minv); // this inverts the matrix sigma_minv, which started out equal to sigma_m before this line
+    kkf_gain = sigma_p*~C*sigma_minv;
+    y(0,0) = distance1; // make sure to include the (0,0) or things will NOT go well
+    y_m = y - C*mu_p;
+    sigma = (eye-kkf_gain*C)*sigma_p;
+    newdistance = false;
+    mu = mu_p + kkf_gain*y_m;
+  }
+  else{
+    // make sure mu and sigma are updated with just predictions
+    // if the update step is not run
+    mu = mu_p;
+    sigma = sigma_p;
+  }
+}
+```
 
-The dynamical model parts of the code run much more often than the distance sensor values, which allow us to figure out where the robot is in between reads of the distance sensor.
-
-The goal of this code is not necessarily to reach the target without overshoot (in fact I will not make my robot stop), but rather to show that the Kalman filter works and the distance values it finds are reasonable given the distance data colleced simultaneously via the distance sensor.
+### Kalman Filter Results
+The Kalman filter output is shown in blue and the distance sensor values are shown in red. It seems like there is a lot of trust in the
+distance sensor values, and the dynamical model does a pretty good job of approximating what's happening in between the distance sensor values.
+![kf1](../images/lab7_kf1.png)
+![kf2](../images/lab7_kf2.png)
+![kf3](../images/lab7_kf3.png)
