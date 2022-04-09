@@ -1,4 +1,6 @@
 # Lab 7 - Kalman Filter
+## Why a Kalman Filter?
+My distance sensor is only so fast. I need something to predict what's happening in between distance sensor values. Also, nothing in life is certain, and a Kalman filter is a way to approximate uncertainty in states of the robot, in this case position and speed.
 
 ## Data Collection and Graphs
 ### Raw Data
