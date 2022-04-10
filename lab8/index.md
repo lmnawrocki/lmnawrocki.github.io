@@ -20,7 +20,7 @@ if (flipped == false){
   if (flipped == true) {
     analogWrite(13, 0); // turn forward motors off
     analogWrite(6, 0);
-    analogWrite(12, 255); // turn
+    analogWrite(12, 255); // turn backward motors on
     analogWrite(7, 255);
   }
 ```
