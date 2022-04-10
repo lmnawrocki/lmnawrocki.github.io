@@ -25,6 +25,11 @@ if (flipped == false){
   }
 ```
 ## Open Loop Stunt
+[video 1](https://photos.app.goo.gl/m6nehSgzofdabECC9)
+[video 2](https://photos.app.goo.gl/dF26o3prUiyg4TmT7)
+[video 3](https://photos.app.goo.gl/EoGe5DcBscHbzFTU8)
+Despite all the drifting and turns, the robot ends up in approximately the same spot each time.
 
-## Blooper Video
-[link](https://photos.app.goo.gl/GfRHqqUpcPGycWCg7)
+## Blooper Videos
+[it flips!!](https://photos.app.goo.gl/GfRHqqUpcPGycWCg7)
+[life on the edge](https://photos.app.goo.gl/MQZ21gRPkQjnVQ5D8)
