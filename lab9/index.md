@@ -32,6 +32,8 @@ I discovered that my robot may have undefined behavior when it loses connection 
 
 ### A better Polar Plot at 5,3
 ![better](../images/lab9_betterpolarplot.PNG)
+
+
 After *many* iterations and variations of my control loop, and tweaks to the power to the motors, Bluetooth setup, timing of things, et cetera, I started getting data that looked more like the above.
 
 ### Converting to Cartesian
@@ -47,4 +49,11 @@ Above is one example of how I converted my data points to cartesian coordinates,
 This could have been done with a rotation matrix, but that would have been more confusing than it would have been worth. Adding the 1.524 and 0.9144 is a coordinate shift as the data points in this list were taken at that location. This could also be represented in matrix form as an additive shift, but I found that doing so was not needed to quickly plot my data.
 
 ### Real Map and Data Points
+
+After some transformations and post-processing, here's the map I was able to achieve. It seems that I would see some improvement in re-doing the scans and attempting to refine my control loop just a bit more, I might have better luck in the areas that aren't depicted too well.
 ![realmap](../images/lab9_realmap.png)
+
+### Hand-Drawn Map from data points
+Here's my best approximation of a map from the data I got.
+![fromsensors](../images/lab9_mapfromsensors.png)
+
