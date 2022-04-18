@@ -1,14 +1,11 @@
-*coming soon...*
-(send help)
-
 # Lab 9 - Mapping
 #### Shout-outs - Help Received
-I talked to Priyam a bit about his approach to the lab and how to collect data.
+I talked to Priyam a bit about his approach to the lab and how to collect data, and I got the idea of using open loop control for this lab from him.
 
 ### Some Opinions on Taping Wheels
 I attempted to put tape over the wheels of my car, like many others have, to help the car spin on axis with less friction. Tape is really great to get the car to *start* spinning. However, slippery tape on the wheels is not so useful when I want my car to *stop* spinning.
 
-I determined that while robots in this class are fast, this lab is not a speed competition, and it's very important that my robot stops in a consistent way so that I can get accurate distance measurements.
+This lab has a nearly equal need for the robot to start and stop spinning in a consistent way to ensure accurate measurements.
 
 Therefore, my wheels do not have tape on them.
 
@@ -25,22 +22,29 @@ While the instructions for this lab claim that PID control is superior, in this 
 
 Anyway, PID control is a lot of work to implement properly. Doing so does not exactly lead to better data. So, I used open loop control for this lab.
 
-### Map Set-up (matlab)
+### My Gyroscope Drifts Inconsistently - More reasons for Open Loop Control
+I also found in using my gyroscope that it drifts a lot and it drifts in an inconsistent manner. PID control would require using the gyroscope to tell my robot how far it is from the setpoint, and I wouldn't be able to get useful data on that due to the nonlinear drift that occurs on my gyroscope.
+
+This inconsistent drifting is a major reason I didn't even use my gyroscope readings in my data processing. Despite my best efforts to use a low-pass filter on the measurements, the gyroscope drifted by a different amount in every test. Therefore, I decided it would be best to watch my robot turn, and to stop the turns when it reached 360 degrees, then assume the measurements were equally spaced, as it was running the same control loop each iteration anyway.
+
+### Odd Bluetooth Stuff
+I discovered that my robot may have undefined behavior when it loses connection from my computer. That was fun. :upside_down:
+
+### A better Polar Plot at 5,3
+![better](../images/lab9_betterpolarplot.PNG)
+After *many* iterations and variations of my control loop, and tweaks to the power to the motors, Bluetooth setup, timing of things, et cetera, I started getting data that looked more like the above.
+
+### Converting to Cartesian
 ```m
-angles53 = angles53.*pi/180;
-dist53 = dist53.*-1/1000;
-polarplot(angles53,dist53,'.')
-for i = 1:40
-    x53(i) = dist53(i)*cos(angles53(i))+1.5;
-    y53(i) = dist53(i)*sin(angles53(i))+1;
+distt = distt.*-1/1000;
+for i = 1:70
+    x53(i) = distt(i)*cosd(-i/70*360)+1.524;
+    y53(i) = distt(i)*sind(-i/70*360)+0.9144;
 end
-figure(2)
-hold on
-plot([-1.6764,-1.6764, -1.6764, 1.9812, -1.6764,1.9812,1.9812,-0.7620, -0.7620, -0.7620,-1.6764], [0.1524,-1.3716, -1.3716,-1.3716,-1.3716,-1.3716, 1.3716, 1.3716, 1.3716, 0.1524, 0.1524],'k', LineWidth=1)
-plot([0.7620, 1.3716, 1.3716, 1.3716, 1.3716, 0.7620, 0.7620, 0.7620],[ -0.1524, -0.1524, -0.1524, 0.4572, 0.4572, 0.4572, 0.4572, -0.1524],'k', LineWidth=1)
-plot([-0.1524, -0.1524, -0.1524, 0.1524, 0.1524, 0.1524],[-1.3716, -0.7620, -0.7620 -0.7620, -0.7620 ,-1.3716] ,'k', LineWidth=1)
-xlim([-2,2])
-ylim([-2,2])
-axis equal
-plot(x53, y53,'k.')
 ```
+Above is one example of how I converted my data points to cartesian coordinates, assuming equal spacing of measurements.
+
+This could have been done with a rotation matrix, but that would have been more confusing than it would have been worth. Adding the 1.524 and 0.9144 is a coordinate shift as the data points in this list were taken at that location. This could also be represented in matrix form as an additive shift, but I found that doing so was not needed to quickly plot my data.
+
+### Real Map and Data Points
+![realmap](../images/lab9_realmap.png)
