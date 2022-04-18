@@ -30,6 +30,65 @@ This inconsistent drifting is a major reason I didn't even use my gyroscope read
 ### Odd Bluetooth Stuff
 I discovered that my robot may have undefined behavior when it loses connection from my computer. That was fun. :upside_down:
 
+### Spin Control Loop Code
+```cpp
+  if (n == -1){ // first iteration setup stuff
+    n = 0;
+    lasttime = millis();
+    timedt = millis();
+    readDistance();
+    getAngle();
+    distances[n] = distance1;
+    angles[n] = pitchlpf;
+  }
+  if (millis() < lasttime + 250) { //turn on the motors once at the start, then keep going until 250 ms has passed
+    if (first == true){
+      analogWrite(13, 150);
+    analogWrite(7, 150);
+    analogWrite(12, 0);
+    analogWrite(6, 0);
+    first = false;
+    }
+  }
+  else {
+    analogWrite(13, 255); // time to collect data and store
+    analogWrite(7, 255);
+    analogWrite(12, 255);
+    analogWrite(6, 255);
+    delay(30);
+    readDistance();
+    getAngle();
+    distances[n] = distance1;
+    angles[n] = pitchlpf;
+    n = n + 1;
+    lasttime = millis();
+    first = true;
+  }
+```
+
+Get Angle function:
+```cpp
+void getAngle(){
+    if (myICM.dataReady())
+  {
+    dt = millis() - timedt;
+    myICM.getAGMT();
+    gypitch = gypitch-myICM.gyrX()*dt/1000; // integration
+    timedt = millis();
+    float alpha = .05;
+    if(m > 1){
+      pitchlpf = alpha*gypitch + (1-alpha)*lastpitch; //low pass filter
+      lastpitch = gypitch;
+    }
+    else {
+      pitchlpf = 0;
+      lastpitch = 0;
+      m = 2;
+    }
+  }
+}
+```
+
 ### A better Polar Plot at 5,3
 ![better](../images/lab9_betterpolarplot.PNG)
 
