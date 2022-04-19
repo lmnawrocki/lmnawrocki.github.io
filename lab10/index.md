@@ -9,7 +9,7 @@ Here it is stuck in the corner of the simulator after I played around with it fo
 
 
 ## Open Loop Control - Square
-The simulator runs differently on different machines because different machines run at different rates due to limitations in hardware and also have a different number of background tasks, which changes how fast or slow the simulator runs.
+The simulator runs differently on different machines because different machines run at different rates due to limitations in hardware and also have a different number of background tasks, which changes how fast or slow the simulator runs. This means that the angular velocity needs to be tuned to each computer, and may not necessary work best at a constant value from day to day.
 
 ```py
 cmdr.set_vel(0,-math.radians(-86.5))
