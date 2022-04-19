@@ -26,7 +26,7 @@ I'm a junior studying Mechanical Engineering at Cornell.
 
 #### [9 - Mapping](https://lmnawrocki.github.io/lab9)
 
-#### [10 -Simulator](https://lmnawrocki.github.io/lab10)
+#### [10 - Simulator](https://lmnawrocki.github.io/lab10)
 
 This is what I look like:
 ![headshot](/images/lmn68_headshot.jpg)
