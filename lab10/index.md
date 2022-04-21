@@ -25,6 +25,8 @@ I found that 88 degree turns actually turn out reasonably close to 90 degree tur
 
 It seems like, if given consistent background tasks, the robot will always go in the same shape, but it will look a little different each time as it will always slightly under turn (in my case).
 
+[video](https://photos.app.goo.gl/KP8mP8jdK9csv1u2A)
+
 ### Ground Truth and Odometry Plot
 ![oltrajectory](../images/lab10_OL_trajectory.PNG)
 
@@ -68,6 +70,8 @@ while cmdr.sim_is_running() and cmdr.plotter_is_running():
 I used a speed of 1 in this case. I thought this speed was a good balance of going fast and avoiding the majority of collisions. The robot can go faster and still avoid some collisions, but at higher speeds, the robot is more likely to collide with things.
 
 I found that the robot can get about .3 meters from the wall before it will collide while turning. Increasing this threshold would lead to more reliable collision avoidance at higher speeds, with the cost of spending more time turning away from walls, as the robot would find itself too close to a wall more often.
+
+[video](https://photos.app.goo.gl/pGoUzLB1AVvxqQUV6)
 
 ### Complete Collision Avoidance (nearly) Impossible
 There are some edge cases that my algorithm does not cover, like the one shown below:
