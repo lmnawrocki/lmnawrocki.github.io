@@ -28,5 +28,7 @@ I'm a junior studying Mechanical Engineering at Cornell.
 
 #### [10 - Simulator](https://lmnawrocki.github.io/lab10)
 
+#### [11 - Localization Using Bayes Filter](https://lmnawrocki.github.io/lab11)
+
 This is what I look like:
 ![headshot](/images/lmn68_headshot.jpg)
