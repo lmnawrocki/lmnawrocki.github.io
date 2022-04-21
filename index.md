@@ -5,8 +5,9 @@ I'm L.M. Nawrocki, and I also go by Lemon. Usually, I go by Lemon out loud and b
 
 I'm a junior studying Mechanical Engineering at Cornell.
 
-#### My pronouns are [they/them](https://www.mypronouns.org/they-them).
+### My pronouns are [they/them](https://www.mypronouns.org/they-them).
 
+^the above line is very big because it would be very nice if the course staff could stop misgendering me please and thank you
 
 #### [1 - Artemis](https://lmnawrocki.github.io/lab1/)
 
@@ -31,4 +32,5 @@ I'm a junior studying Mechanical Engineering at Cornell.
 #### [11 - Localization Using Bayes Filter](https://lmnawrocki.github.io/lab11)
 
 This is what I look like:
+
 ![headshot](/images/lmn68_headshot.jpg)
