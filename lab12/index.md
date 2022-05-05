@@ -44,4 +44,18 @@ async def perform_observation_loop(self, rot_vel=120):
 
 ## Results
 
-not gonna lie, this really did not work all that well. :/
+Not going to lie, this lab was not it for my robot :/
+
+See the appendix for the blame distribution, but I will discuss the blame I place on motor dynamics, the floor, and gyroscope problems and how they contributed to my robot being unable to localize properly.
+
+
+
+##### appendix - blame distribution
+blame is distributed as follows:
+
+| Item to blame      | % of blame |
+| ----------- | ----------- |
+| motor dynamics     | 20% |
+| the floor          | 10% |
+| my mental health~~ | 30% |
+| gyroscope problems | 40% |
