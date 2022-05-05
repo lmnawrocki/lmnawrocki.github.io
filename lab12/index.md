@@ -54,8 +54,27 @@ My *motor* dynamics are actually pretty consistent; my motors are turning in the
 
 But the real source of error is the gyroscope.
 
-I put some effort into accounting for the drift that occurs over time, and despite this, the gyrocope is still always very off. It will consistently think that my robot only turned 250-280 degrees in total despite the actual robot doing a consistent 1.5+ rotations.
+I put some effort into [accounting for the drift](https://lmnawrocki.github.io/lab12/#appendix---accounting-for-gyro-drift) that occurs over time, and despite this, the gyrocope is still always very off. It will consistently think that my robot only turned 250-280 degrees in total despite the actual robot doing a consistent 1.5+ rotations.
 
+Here's a [video](https://photos.app.goo.gl/EEXYEdHnanZCLr9ZA) of it (not) working :)
+
+The gyroscope thinks it turned 277 degrees but as you can see it simply did not.
+
+Here's a [second video](https://photos.app.goo.gl/LFeniJeJYmwCyUyk8) where the gyroscope thinks it turned 257 degrees and while it sure did turn less than the other video, it sure did not turn 257 degrees. No, it did not localize properly here either.
+
+
+### It Localizes, but Wrong :/
+![eeeee](../lab12/dudewhypt1.PNG)
+The robot was in the location shown in the first video during this localization :/
+
+### how, perhaps, this could be fixed
+Adjust the number of measurements so that the robot actually turns 360 degrees, despite whatever alternative reality the gyroscope is in. Assume the gyroscope was consistently off, and normalize the angles it found to a 360-degree rotation.
+
+cross fingers.
+
+##### appendix - accounting for gyro drift
+here is this graph to show that it drifts 0.9516 deg/second, the slope of this line. The robot was sitting still on a flat table during this test.
+![aaaa](../lab12/dritfy.png)
 
 ##### appendix - blame distribution
 blame is distributed as follows:
