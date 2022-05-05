@@ -46,8 +46,15 @@ async def perform_observation_loop(self, rot_vel=120):
 
 Not going to lie, this lab was not it for my robot :/
 
-See the appendix for the blame distribution, but I will discuss the blame I place on motor dynamics, the floor, and gyroscope problems and how they contributed to my robot being unable to localize properly.
+See the [appendix](https://lmnawrocki.github.io/lab12/#appendix---blame-distribution) for the blame distribution, but I will discuss the blame I place on motor dynamics, the floor, and gyroscope problems and how they contributed to my robot being unable to localize properly.
 
+The floor & wheel dynamics: Sometimes there are inconsistencies in that my wheels are dirty and sticky and so is the floor. These things are dirty and sticky in various places, which can lead to a little bit of inconsistant movement. If I knew a good way to clean my wheels (other than *literally* giving my robot a bath), I would. I'm also not super interested in cleaning the floor. While the floor is not the cleanest, I don't think it's contributing that much to my robot slipping on the floor.
+
+My *motor* dynamics are actually pretty consistent; my motors are turning in the way they should for the car to move the way it should. They start & stop the movement very quickly and consistently using active braking.
+
+But the real source of error is the gyroscope.
+
+I put some effort into accounting for the drift that occurs over time, and despite this, the gyrocope is still always very off. It will consistently think that my robot only turned 250-280 degrees in total despite the actual robot doing a consistent 1.5+ rotations.
 
 
 ##### appendix - blame distribution
@@ -55,7 +62,11 @@ blame is distributed as follows:
 
 | Item to blame      | % of blame |
 | ----------- | ----------- |
-| motor dynamics     | 20% |
-| the floor          | 10% |
-| my mental health~~ | 30% |
+| wheel dynamics     | 15% |
+| the floor          | 5%  |
+| my mental health~~ | 40% |
 | gyroscope problems | 40% |
+
+<sub>(please don't worry about the mental health it's a perfectly normal reaction to nine silly people in silly robes plotting your disappearance & will poke you w/ a little stick if you don't go away)<sub>
+
+(this is supposed to be humor)
