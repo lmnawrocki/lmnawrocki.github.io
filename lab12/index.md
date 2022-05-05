@@ -10,6 +10,36 @@ You can see that it works in some areas better than others. There are always
 The map is more symmetrical near the top, which makes it harder for the Bayes filter to determine where the robot is accurately.
 
 ## Implementing on the Artemis
+```cpp
+getAngle();
+  if (pitchlpf < laststop + 15) {
+    if (first == true){
+      if (n < 19) {
+        Serial.println("beginning spin");
+        analogWrite(13, 0);
+        analogWrite(7, 0);
+        analogWrite(12, 140);
+        analogWrite(6, 140);
+        first = false;
+      }
+    }
+    getAngle();
+  }
+  else {
+    getAngle();
+    Serial.println("spin ended");
+    analogWrite(13, 255);
+    analogWrite(7, 255);
+    analogWrite(12, 255);
+    analogWrite(6, 255);
+    getAngle();
+    readDistance();
+    getAngle();
+  }
+}
+```
+not shown:
+code for data transmission, which happens at the end of each turn. see previous labs to get the idea.
 
 ## Implementing in Python
 ```py
