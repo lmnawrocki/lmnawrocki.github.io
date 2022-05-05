@@ -31,6 +31,10 @@ I'm a junior studying Mechanical Engineering at Cornell.
 
 #### [11 - Localization Using Bayes Filter](https://lmnawrocki.github.io/lab11)
 
+#### [12 - localization on real robot](https://lmnawrocki.github.io/lab12)
+
+#### [13](https://lmnawrocki.github.io/lab13) 
+
 This is what I look like:
 
 ![headshot](/images/lmn68_headshot.jpg)
