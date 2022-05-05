@@ -33,7 +33,7 @@ I'm a junior studying Mechanical Engineering at Cornell.
 
 #### [12 - localization on real robot](https://lmnawrocki.github.io/lab12)
 
-#### [13](https://lmnawrocki.github.io/lab13) 
+#### [13 - Path Planning and Execution](https://lmnawrocki.github.io/lab13) 
 
 This is what I look like:
 
