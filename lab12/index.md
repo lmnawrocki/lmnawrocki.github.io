@@ -95,10 +95,7 @@ Here's a [second video](https://photos.app.goo.gl/LFeniJeJYmwCyUyk8) where the g
 
 ### It Localizes, but Wrong :/
 ![eeeee](../lab12/dudewhypt1.PNG)
-The robot was in the location shown in the first video during this localization :/
-
-![aaa](../lab12/dudewhypt2.PNG)
-here it is where it thought it was in the second video. also not right :/
+The robot was in the location shown in the second video during this localization :/ (I forgot to save where it thought it was in the first video, but it was a couple feet up and to the right of this spot)
 
 
 and here is a polar plot from a different (but same code/theory) trial, which might give some insight to the robot's confusion and inability to localize, as it does not look like the map in the area the robot was in, but looks perhaps slightly more like the map does in the place it localized to:
