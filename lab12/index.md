@@ -97,10 +97,18 @@ Here's a [second video](https://photos.app.goo.gl/LFeniJeJYmwCyUyk8) where the g
 ![eeeee](../lab12/dudewhypt1.PNG)
 The robot was in the location shown in the first video during this localization :/
 
-### how, perhaps, this could be fixed
-Adjust the number of measurements so that the robot actually turns 360 degrees, despite whatever alternative reality the gyroscope is in. Assume the gyroscope was consistently off, and normalize the angles it found to a 360-degree rotation.
+![aaa](../lab12/dudewhypt2.PNG)
+here it is where it thought it was in the second video. also not right :/
 
-cross fingers.
+
+and here is a polar plot from a different (but same code/theory) trial, which might give some insight to the robot's confusion and inability to localize, as it does not look like the map in the area the robot was in, but looks perhaps slightly more like the map does in the place it localized to:
+
+![polar plot](../lab12/polarplot.png)
+
+### how, perhaps, this could be fixed
+1. Adjust the number of measurements so that the robot actually turns 360 degrees, despite whatever alternative reality the gyroscope is in. Assume the gyroscope was consistently off, and normalize the angles it found to a 360-degree rotation.
+
+2. cross fingers.
 
 ##### appendix - accounting for gyro drift
 here is this graph to show that it drifts 0.9516 deg/second, the slope of this line. The robot was sitting still on a flat table during this test.
