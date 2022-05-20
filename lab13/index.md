@@ -51,19 +51,27 @@ With some slightly different parameters, I was able to get some slightly better 
 #### Discussion of this algorithm
 This approach had several pros and cons. 
 
-Some downsides of this approach are that the robot does not have much information about where it is on the map, and therefore it's impossible to know which waypoint the robot is at. Some poor localization may be possible to implement when the robot is not moving using the magnometer and readings from both TOF values, but this wouldn't work with the grid localization framework made in previous labs without significant modification. The localization would only work when the motors are not powered as the magnetic fields created by them would mess with the magnometer readings.
+One downside of this approach are that the robot does not have much information about where it is on the map, and therefore it's impossible to know which waypoint the robot is at. Some poor localization may be possible to implement when the robot is not moving using the magnometer and readings from both TOF values, but this wouldn't work with the grid localization framework made in previous labs without significant modification. The localization would only work when the motors are not powered as the magnetic fields created by them would mess with the magnometer readings.
+
+Another downside of this approach is that I did not implement anything to prevent the robot from getting stuck in certain cases. This can be seen at the end of the 
 
 A useful feature of this approach is that the robot can start anywhere on the map, and it's likely to see success eventually regardless of location. There are some starting points that will lead to more success than others, but 
 
 ### part three: TOF sensors do everything, going backwards, somewhat sucessfully
-[Video]()
+[Here's my most sucessful video of this approach](https://photos.app.goo.gl/vMpu9QdHnpsBrvMD6)
+As you can see, this approach is incredibly slow. I ran it very slowly because 
+
+Still, the robot does not manage to move away from the wall 
 
 ### Part 4: adding P control on position for a little boost
+[Here's the most successful video of this approach](https://photos.app.goo.gl/k5otHEfbTgyuJh7e6)
 I attempted to add some proportional control using the TOF values for both the forward movements and the corrections for being too close or too far from a wall. I think this was my best approach in theory given what I had, but I still could have improved a lot on what I implemented.
 
 I think the best way that I could have improved would have been by using two Kalman filters to more accurately determine the position of my robot. 
 One of the Kalman filters 
 I chose not to implement this kind of Kalman filter as I knew it wouldn't be very useful to my success unless the other Kalman filter 
+
+Here's a [blooper](https://photos.app.goo.gl/Dz1bi6Zn5VyMBm5x6) that I thought was rather interesting, especially in the way the robot drifted in the end. It shows that the P controller for being away from the walls works rather well, as information that the robot is getting saying that it's far from walls is causing it to try to spin closer to the wall, but it fails gracefully.
 
 ### Part 5 - A* planning
 If I wanted to take this lab a step further in another direction, I could have implemented A\* planning. While this would have been mildly interesting to implement, I chose not to do it as it wasn't going to produce any interesting videos and it would have been very difficult to translate to the real robot.
