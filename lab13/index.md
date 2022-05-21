@@ -83,6 +83,8 @@ I think an implementation of both Kalman filters would be an interesting substit
 
 Here's a [blooper](https://photos.app.goo.gl/Dz1bi6Zn5VyMBm5x6) that I thought was rather interesting, especially in the way the robot drifted in the end. It shows that the P controller for being away from the walls works rather well, as information that the robot is getting saying that it's far from walls is causing it to try to spin closer to the wall, but it fails gracefully.
 
+[Here you can see some code snippets and discussion of the code in this approach.](https://lmnawrocki.github.io/lab13/#P-control)
+
 ### Part 5 - A* planning
 If I wanted to take this lab a step further in another direction, I could have implemented A\* planning. While this would have been mildly interesting to implement, I chose not to do it as it wasn't going to produce any interesting videos and it would have been very difficult to translate to the real robot.
 
@@ -191,7 +193,7 @@ void turnLeft(){
 }
 ```
 
-### P control on position
+### P control
 ```cpp
 void pauseBetweenTasks(){
   if(tasktimestamp + 1000 > millis()){
