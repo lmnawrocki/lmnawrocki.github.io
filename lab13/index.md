@@ -20,7 +20,7 @@ Luckily, I still have two TOF sensors, which is good enough for doing some wall 
 Please ignore all the mean things I said about my gyroscope in the last report. My gyroscope may or may not be living in a different coordinate system, but at least it's doing so consistently. Therefore, I'm going to use the gyroscope to perform the turns in this lab accurately-ish, and go through fine tuning it in order to perform the turns consistently.
 
 #### part 4 - taking it slow
-My robot will be easier to visually debug if I run it slowly, and this isn't a speed competition, so... slow.
+My robot will be easier to visually debug if I run it slowly. I can then speed it up later and tune to the optimal speed.
 
 ## What actually happened, in many parts
 Spoiler alert: this lab did not go according to plan.
@@ -83,7 +83,7 @@ I think an implementation of both Kalman filters would be an interesting substit
 
 Here's a [blooper](https://photos.app.goo.gl/Dz1bi6Zn5VyMBm5x6) that I thought was rather interesting, especially in the way the robot drifted in the end. It shows that the P controller for being away from the walls works rather well, as information that the robot is getting saying that it's far from walls is causing it to try to spin closer to the wall, but it fails gracefully.
 
-[Here you can see some code snippets and discussion of the code in this approach.](https://lmnawrocki.github.io/lab13/#P-control)
+[Here you can see some code snippets and discussion of the code in this approach.](https://lmnawrocki.github.io/lab13/#p-control)
 
 ### Part 5 - A* planning
 If I wanted to take this lab a step further in another direction, I could have implemented A\* planning. While this would have been mildly interesting to implement, I chose not to do it as it wasn't going to produce any interesting videos and it would have been very difficult to translate to the real robot.
@@ -194,40 +194,18 @@ void turnLeft(){
 ```
 
 ### P control
+
+Here's some of the more important code snippets from this implementation:
 ```cpp
-void pauseBetweenTasks(){
-  if(tasktimestamp + 1000 > millis()){
-    hardStopMovement();
-  }
-  else{
-    pausing = false;
-  }
-}
-
-void taskOne(){
-  if(tasktimestamp + 400 > millis()){
-    goForward();
-  }
-  if(tasktimestamp + 400 < millis()){
-    hardStopMovement();
-    tasknum = 2;
-    resetGyro();
-    pausing = true;
-    distanceSensor2.startRanging();
-    distanceSensor1.startRanging();
-    tasktimestamp = millis();
-  }
-}
-
 void wallFollow(){
-  if(tasknum == 3 || tasknum == 4 || tasknum == 5){
+  if(tasknum == 3 || tasknum == 4 || tasknum == 5){ // tasknum is how I keep track of each time the robot reaches a corner, which happens to be where the waypoints that I'm going for are
     stopdist = 500;
     sidedist = 300;
-    checkDistFront();
+    checkDistFront(); // I used these functions to check for new distances in this code to make actions still occur even if only one of the sensors has updated. This is good if the distance sensors are running at different speeds
     checkDistSide();
   }
   if (tasknum == 2){
-    sidedist = 550;
+    sidedist = 550; // I tried to adjust the thresholds for when the robot reacts to walls based on its location in the map
     stopdist = 400;
     distanceside = 550;
     checkDistFront();
@@ -236,7 +214,7 @@ void wallFollow(){
     if(distancefront < stopdist){
       hardStopMovement();
       tasktimestamp = millis();
-      if(tasknum == 2){
+      if(tasknum == 2){ // these next several lines transmit when the robot gets to a new corner in the map
         tasknum = 3;
         tx_characteristic_float.writeValue(2.0);
         delay(5);
@@ -266,14 +244,14 @@ void wallFollow(){
       }
       tasktimestamp = millis();
     }
-    else if(newdistside == true){
+    else if(newdistside == true){ // this is doing P control on moving the robot the correct distance from the wall in response to side sensor values
+    // it only acts when the robot is outside a certain range 
       if(distanceside < sidedist - 50){
         err = ((sidedist-50) - distanceside)/20;
         analogWrite(12, 0);
         analogWrite(6, 10 + err);
         analogWrite(13, 100 + err);
         analogWrite(7, 0);
-        tx_characteristic_float.writeValue(.3);
       }
       else if(distanceside > sidedist + 75){
         err = (-(sidedist+100) + distanceside)/20;
@@ -281,7 +259,6 @@ void wallFollow(){
         analogWrite(6, 100 + err);
         analogWrite(13, 10 + err);
         analogWrite(7, 0);
-        tx_characteristic_float.writeValue(.4);
       }
       else {
         analogWrite(13, 60);
@@ -292,6 +269,7 @@ void wallFollow(){
     }
     else{
       // proceed forward with P control
+      // this is a P controller on the forward movement of the robot
       err = (distancefront - stopdist)/10;
       if (err > 65){
         err = 65;
@@ -306,47 +284,19 @@ void wallFollow(){
   tasktimestamp = millis();
 }
 
-void turnRight(){
-  tx_characteristic_float.writeValue(.2);
-  delay(5);
-  if (first == true){
-    analogWrite(13, 125);
-    analogWrite(7, 125);
-    analogWrite(12, 0);
-    analogWrite(6, 0);
-    first = false;
-    tasktimestamp = millis();
-  }
-  if(tasktimestamp + 1000 > millis()){
-      analogWrite(13, 125);
-      analogWrite(7, 125);
-      analogWrite(12, 0);
-      analogWrite(6, 0);
-  }
-  if(tasktimestamp + 1000 < millis()){
-    hardStopMovement();
-    pausing = true;
-    turning = false;
-    first = true;
-    distanceSensor2.startRanging();
-    distanceSensor1.startRanging();
-    tx_characteristic_float.writeValue(.1);
-    tasktimestamp = millis();
-  }
-}
 
-void sillyLittleTasks(){
+void tasks(){ // this is the main control function for determining which action the robot will be doing
   Serial.println(tasknum);
   if (pausing == true){
-    pauseBetweenTasks();
+    pauseBetweenTasks(); // robot stops moving in between actions to try to achieve consistent and predictable dynamics
   }
   else if(turning == true){
-    turnRight();
+    turnRight(); // this is used when it is determined that the robot has reached a corner
   }
   else{
     if (tasknum == 0){
       tasknum = 1;
-      tx_characteristic_float.writeValue(1.0);
+      tx_characteristic_float.writeValue(1.0); // transmit that the robot is at the starting point
       delay(5);
     }
     if (tasknum == 1){
@@ -354,7 +304,6 @@ void sillyLittleTasks(){
     }
     else{
       if (tasknum == 2 || tasknum==3 || tasknum == 4 || tasknum == 5){
-        tx_characteristic_float.writeValue(.5);
          wallFollow();
       }
     }
