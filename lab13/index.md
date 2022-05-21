@@ -1,7 +1,8 @@
 # Lab 13
+*the finale...*
 
 ## The Plan
-in a few parts
+###### (in a few parts)
 
 #### part 1 - heck localization
 As you may have noticed, my lab 12 report was moderately unhinged and the localization was only slightly better than throwing a dart at the map.
@@ -29,6 +30,9 @@ Spoiler alert: this lab did not go according to plan.
 
 Above are some videos taken right around the same time showing that my PID behavior is really inconsistent. Sometimes it turns, sometimes it doesn't. Sometimes it overshoots, sometimes it doesn't. I can't figure out how to make sense of my gyroscope's behavior and use it to lead to consistent results. I have a low pass filter. While my gains cause it to turn slowly, I found that turning them too high led to significant overshoot that my robot would fail to correct for.
 
+See [here](https://lmnawrocki.github.io/lab13/#angular-pid) for some code snippets and discussion on the code.
+
+All of the bad things I said about gyroscopes in previous labs are re-instated.
 
 ### part two: blind little buggin' DVD
 After discussing that things weren't working with Johnathan and some other students in lab, I realized that I could get my robot to hit a lot of the waypoints just by employing a simple algorithm that tried to keep the robot a certain distance from the walls.
@@ -46,16 +50,20 @@ The algorithm has just a few steps:
 
 
 With some slightly different parameters, I was able to get some slightly better performance shown here:
-[Video](https://photos.app.goo.gl/7wDYjxSW9f5FPsKQ9) The robot covers more waypoints faster in this video.
+[Video 2 -- turning a bit less](https://photos.app.goo.gl/7wDYjxSW9f5FPsKQ9) The robot covers more waypoints faster in this video.
+
+See [here](https://lmnawrocki.github.io/lab13/#part-two) for code snippets and discussion of the code details.
 
 #### Discussion of this algorithm
 This approach had several pros and cons. 
 
-One downside of this approach are that the robot does not have much information about where it is on the map, and therefore it's impossible to know which waypoint the robot is at. Some poor localization may be possible to implement when the robot is not moving using the magnometer and readings from both TOF values, but this wouldn't work with the grid localization framework made in previous labs without significant modification. The localization would only work when the motors are not powered as the magnetic fields created by them would mess with the magnometer readings.
+One downside of this approach are that the robot does not have much information about where it is on the map, and therefore it's impossible to know which waypoint the robot is at. This is a failure to complete one of the important tasks in this lab. Some poor localization may be possible to implement when the robot is not moving using the magnometer and readings from both TOF values, but this wouldn't work with the grid localization framework made in previous labs without significant modification. The localization would only work when the motors are not powered as the magnetic fields created by them would mess with the magnometer readings.
 
-Another downside of this approach is that I did not implement anything to prevent the robot from getting stuck in certain cases. This can be seen at the end of the 
+Another downside of this approach is that I did not implement anything to prevent the robot from getting stuck in certain cases. This can be seen at the end of the videos when the robot does in fact get stuck. *sigh*
 
-A useful feature of this approach is that the robot can start anywhere on the map, and it's likely to see success eventually regardless of location. There are some starting points that will lead to more success than others, but 
+I could have avoided the robot getting stuck by adding some code where if the 5 most recent TOF values were very close to one another, the robot could initiate some kind of spinning sequence at full power to make the chances that it would become un-stuck very high.
+
+A useful feature of this approach is that the robot can start anywhere on the map, and it's likely to see success eventually regardless of location. There are some starting points that will lead to more success than others, but if the robot doesn't get stuck, it should reach every point eventually.
 
 ### part three: TOF sensors do everything, going backwards, somewhat sucessfully
 [Here's my most sucessful video of this approach](https://photos.app.goo.gl/vMpu9QdHnpsBrvMD6)
@@ -69,7 +77,9 @@ I attempted to add some proportional control using the TOF values for both the f
 
 I think the best way that I could have improved would have been by using two Kalman filters to more accurately determine the position of my robot. 
 One of the Kalman filters 
-I chose not to implement this kind of Kalman filter as I knew it wouldn't be very useful to my success unless the other Kalman filter 
+I chose not to implement this kind of Kalman filter as I knew it wouldn't be very useful to my success unless the other Kalman filter was also implemented.
+
+I think an implementation of both Kalman filters would be an interesting substitute for localization. In theory, if both Kalman filters were working well 
 
 Here's a [blooper](https://photos.app.goo.gl/Dz1bi6Zn5VyMBm5x6) that I thought was rather interesting, especially in the way the robot drifted in the end. It shows that the P controller for being away from the walls works rather well, as information that the robot is getting saying that it's far from walls is causing it to try to spin closer to the wall, but it fails gracefully.
 
