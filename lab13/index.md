@@ -67,9 +67,9 @@ A useful feature of this approach is that the robot can start anywhere on the ma
 
 ### part three: TOF sensors do everything, going backwards, somewhat sucessfully
 [Here's my most sucessful video of this approach](https://photos.app.goo.gl/vMpu9QdHnpsBrvMD6)
-As you can see, this approach is incredibly slow. I ran it very slowly because 
+As you can see, this approach is incredibly slow. I ran it very slowly because there were two TOF sensor readings in each time step. This caused a .2s delay before the robot reacted to its surroundings. The robot consistently hit the wall due to its slow reaction time if it went much faster.
 
-Still, the robot does not manage to move away from the wall 
+Additionally, the robot does not manage to move away from the wall in the second part of the video. This is because I was not able to tune the turning well to have it turn away from the wall in this case. I found that using powerful turns to move away from a wall led to turning too much and hitting the other wall.
 
 ### Part 4: adding P control on position for a little boost
 [Here's the most successful video of this approach](https://photos.app.goo.gl/k5otHEfbTgyuJh7e6)
@@ -147,10 +147,10 @@ The code moves between calling the two functions below. turnLeft() is executed w
 ```cpp
 void wallFollow(){
   if(tasknum == 7){
-    stopdist = 440;
+    stopdist = 440; // threshold for robot performing a big turn. tuning this parameter bigger or smaller will help the robot hit waypoints different distances from the walls. I found this worked well for these waypoints and this map, since this is the approximate distance between many of the waypoints and a wall.
   }
-  readDistSide();
-  if(distanceside < 300){
+  readDistSide(); // check the side sensor first, since not hitting a wall on the side is the primary way the robot gets stuck.
+  if(distanceside < 300){ // this parameter is smaller than the other one because if the robot is close to the wall and near a waypoint, I don't want to cause the robot to miss that waypoint
      analogWrite(12, 0);
      analogWrite(6, 0);
      analogWrite(13, 110);
@@ -169,13 +169,13 @@ void wallFollow(){
       analogWrite(6, 0);
       analogWrite(12, 0);
       analogWrite(7, 0);
-      tasknum = 8;
+      tasknum = 8; // switch to a big turn
     }
   }
 }
 
 void turnLeft(){
-  if(tasktimestamp + 1500 > millis()){
+  if(tasktimestamp + 1500 > millis()){ // OL timer-based control for turning due to my gyroscope issues
       analogWrite(12, 0);
       analogWrite(6, 0);
       analogWrite(13, 125);
@@ -183,10 +183,180 @@ void turnLeft(){
   }
   if(tasktimestamp + 1500 < millis()){
     hardStopMovement();
-    tasknum = 7;
+    tasknum = 7; // big turn is completed, switch back to the other part of the algorithm
     resetGyro();
-    pausing = true;
+    pausing = true; // I pause for a small amount of time between turning to let the robot stop moving before applying a new control. this makes the dynamics of my robot more predictable and intuitive to debug
     tasktimestamp = millis();
   }
 }
+```
+
+### P control on position
+```cpp
+void pauseBetweenTasks(){
+  if(tasktimestamp + 1000 > millis()){
+    hardStopMovement();
+  }
+  else{
+    pausing = false;
+  }
+}
+
+void taskOne(){
+  if(tasktimestamp + 400 > millis()){
+    goForward();
+  }
+  if(tasktimestamp + 400 < millis()){
+    hardStopMovement();
+    tasknum = 2;
+    resetGyro();
+    pausing = true;
+    distanceSensor2.startRanging();
+    distanceSensor1.startRanging();
+    tasktimestamp = millis();
+  }
+}
+
+void wallFollow(){
+  if(tasknum == 3 || tasknum == 4 || tasknum == 5){
+    stopdist = 500;
+    sidedist = 300;
+    checkDistFront();
+    checkDistSide();
+  }
+  if (tasknum == 2){
+    sidedist = 550;
+    stopdist = 400;
+    distanceside = 550;
+    checkDistFront();
+  }
+  if(newdistfront == true){
+    if(distancefront < stopdist){
+      hardStopMovement();
+      tasktimestamp = millis();
+      if(tasknum == 2){
+        tasknum = 3;
+        tx_characteristic_float.writeValue(2.0);
+        delay(5);
+        turning = true;
+        pausing = true;
+      }
+      else if (tasknum == 3){
+        tasknum =4;
+        tx_characteristic_float.writeValue(3.0);
+        delay(5);
+        turning = true;
+        pausing = true;
+      }
+      else if(tasknum == 4){
+        tasknum =5;
+        tx_characteristic_float.writeValue(4.0);
+        delay(5);
+        turning = true;
+        pausing = true;
+      }
+      else if (tasknum == 5){
+        tasknum =6;
+        tx_characteristic_float.writeValue(5.0);
+        delay(5);
+        turning = true;
+        pausing = true;
+      }
+      tasktimestamp = millis();
+    }
+    else if(newdistside == true){
+      if(distanceside < sidedist - 50){
+        err = ((sidedist-50) - distanceside)/20;
+        analogWrite(12, 0);
+        analogWrite(6, 10 + err);
+        analogWrite(13, 100 + err);
+        analogWrite(7, 0);
+        tx_characteristic_float.writeValue(.3);
+      }
+      else if(distanceside > sidedist + 75){
+        err = (-(sidedist+100) + distanceside)/20;
+        analogWrite(12, 0);
+        analogWrite(6, 100 + err);
+        analogWrite(13, 10 + err);
+        analogWrite(7, 0);
+        tx_characteristic_float.writeValue(.4);
+      }
+      else {
+        analogWrite(13, 60);
+        analogWrite(6, 60);
+        analogWrite(12, 0);
+        analogWrite(7, 0);
+      }
+    }
+    else{
+      // proceed forward with P control
+      err = (distancefront - stopdist)/10;
+      if (err > 65){
+        err = 65;
+      }
+      analogWrite(13, 60 + err);
+      analogWrite(6, 60 + err);
+      analogWrite(12, 0);
+      analogWrite(7, 0);
+    }
+    tasktimestamp = millis();
+  }
+  tasktimestamp = millis();
+}
+
+void turnRight(){
+  tx_characteristic_float.writeValue(.2);
+  delay(5);
+  if (first == true){
+    analogWrite(13, 125);
+    analogWrite(7, 125);
+    analogWrite(12, 0);
+    analogWrite(6, 0);
+    first = false;
+    tasktimestamp = millis();
+  }
+  if(tasktimestamp + 1000 > millis()){
+      analogWrite(13, 125);
+      analogWrite(7, 125);
+      analogWrite(12, 0);
+      analogWrite(6, 0);
+  }
+  if(tasktimestamp + 1000 < millis()){
+    hardStopMovement();
+    pausing = true;
+    turning = false;
+    first = true;
+    distanceSensor2.startRanging();
+    distanceSensor1.startRanging();
+    tx_characteristic_float.writeValue(.1);
+    tasktimestamp = millis();
+  }
+}
+
+void sillyLittleTasks(){
+  Serial.println(tasknum);
+  if (pausing == true){
+    pauseBetweenTasks();
+  }
+  else if(turning == true){
+    turnRight();
+  }
+  else{
+    if (tasknum == 0){
+      tasknum = 1;
+      tx_characteristic_float.writeValue(1.0);
+      delay(5);
+    }
+    if (tasknum == 1){
+      taskOne();
+    }
+    else{
+      if (tasknum == 2 || tasknum==3 || tasknum == 4 || tasknum == 5){
+        tx_characteristic_float.writeValue(.5);
+         wallFollow();
+      }
+    }
+  }
+}
+
 ```
